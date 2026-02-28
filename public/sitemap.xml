@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <url>
@@ -8,18 +7,29 @@
   </url>
 
   <url>
-    <loc>https://www.anantharealestate.in/about</loc>
+    <loc>https://www.anantharealestate.in/AboutPage</loc>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://www.anantharealestate.in/services</loc>
+    <loc>https://www.anantharealestate.in/ServicesPage</loc>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://www.anantharealestate.in/contact</loc>
+    <loc>https://www.anantharealestate.in/ContactPage</loc>
     <priority>0.7</priority>
+  </url>
+
+  url>
+    <loc>https://www.anantharealestate.in/PortfolioPage</loc>
+    <priority>0.6</priority>
+  </url>
+  <!-- Central World Landing Page -->
+  <url>
+    <loc>https://www.anantharealestate.in/central-world</loc>
+    <lastmod>2026-02-28</lastmod>
+    <priority>0.9</priority>
   </url>
 
 </urlset>
