@@ -25,7 +25,7 @@
     <loc>https://www.anantharealestate.in/PortfolioPage</loc>
     <priority>0.6</priority>
   </url>
-  <!-- Central World Landing Page -->
+  
   <url>
     <loc>https://www.anantharealestate.in/central-world</loc>
     <lastmod>2026-02-28</lastmod>
@@ -33,3 +33,4 @@
   </url>
 
 </urlset>
+
