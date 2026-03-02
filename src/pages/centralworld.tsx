@@ -15,6 +15,22 @@ export default function CentralWorld() {
   const [animateCounters, setAnimateCounters] = useState(false);
 
   useEffect(() => {
+  document.title =
+    "Central World Nellore | 125 Acres Premium Township | Anantha Real Estate";
+
+  const metaDescription = document.querySelector(
+    "meta[name='description']"
+  );
+
+  if (metaDescription) {
+    metaDescription.setAttribute(
+      "content",
+      "Central World is a 125-acre premium township in Nellore with 31,000 sq ft clubhouse. NUDA & RERA approved. Book your site visit today."
+    );
+  }
+}, []);
+
+  useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
