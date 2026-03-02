@@ -9,6 +9,7 @@ import ServicesPage from "./pages/ServicesPage";
 import PortfolioPage from "./pages/PortfolioPage";
 import ContactPage from "./pages/ContactPage";
 import NotFound from "./pages/NotFound";
+import CentralWorld from "./pages/centralworld";
 import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/portfolio" element={<PortfolioPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/centralworld" element={<CentralWorld />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
