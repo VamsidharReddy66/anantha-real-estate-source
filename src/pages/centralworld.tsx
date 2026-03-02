@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Helmet } from "react-helmet-async";
 import { Button } from '@/components/ui/button';
 import { Phone, MapPin, Award, Users, Home as HomeIcon, Zap } from 'lucide-react';
 
@@ -39,6 +40,26 @@ export default function CentralWorld() {
   }, []);
 
   return (
+
+    <>
+  <Helmet>
+    <title>
+      Central World Nellore | 125 Acres Premium Township | Anantha Real Estate
+    </title>
+
+    <meta
+      name="description"
+      content="Central World is a 125-acre premium township in Nellore with 31,000 sq ft clubhouse. NUDA & RERA approved. Book your site visit today."
+    />
+
+    <link
+      rel="canonical"
+      href="https://www.anantharealestate.in/centralworld"
+    />
+  </Helmet>
+
+  {/* your full page JSX */}
+</>
     <div className="min-h-screen bg-white text-foreground">
       {/* NAVIGATION */}
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-lg' : 'bg-transparent'}`}>
