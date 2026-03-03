@@ -445,5 +445,6 @@ export default function CentralWorld() {
         </div>
       </footer>
     </div>
+      </>
   );
 }
