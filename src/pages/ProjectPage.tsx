@@ -1,5 +1,7 @@
 import { ArrowLeft, ArrowRight, Building2, MapPin, Phone } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { getProjectBySlug } from "@/data/projects";
@@ -10,16 +12,20 @@ const ProjectPage = () => {
 
   if (!project) {
     return (
-      <div className="min-h-screen bg-background pt-32 pb-24">
-        <div className="container mx-auto px-4 max-w-3xl">
-          <h1 className="font-display text-4xl font-bold mb-4">Project not found</h1>
-          <p className="text-muted-foreground mb-8">
-            The project you are looking for is not currently available in our project inventory.
-          </p>
-          <Button variant="brand" asChild>
-            <Link to="/projects">Back to Projects</Link>
-          </Button>
-        </div>
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <main className="pt-32 pb-24">
+          <div className="container mx-auto px-4 max-w-3xl">
+            <h1 className="font-display text-4xl font-bold mb-4">Project not found</h1>
+            <p className="text-muted-foreground mb-8">
+              The project you are looking for is not currently available in our project inventory.
+            </p>
+            <Button variant="brand" asChild>
+              <Link to="/projects">Back to Projects</Link>
+            </Button>
+          </div>
+        </main>
+        <Footer />
       </div>
     );
   }
@@ -31,6 +37,7 @@ const ProjectPage = () => {
         description={project.seoDescription}
         path={`/project/${project.slug}`}
       />
+      <Navbar />
 
       <main className="pt-32 pb-24">
         <div className="container mx-auto px-4">
@@ -125,6 +132,7 @@ const ProjectPage = () => {
           </section>
         </div>
       </main>
+      <Footer />
     </div>
   );
 };
