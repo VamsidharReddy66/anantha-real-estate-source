@@ -2,10 +2,16 @@ import React, { FC } from "react";
 import Navbar from "@/components/Navbar";
 import Services from "@/components/Services";
 import Footer from "@/components/Footer";
+import SEO from "@/components/SEO";
 
 const ServicesPage: FC = () => {
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Real Estate Services in Nellore | Anantha Real Estate"
+        description="Explore Anantha Real Estate services in Nellore including property search, buying and selling support, valuation, legal assistance, loan support and investment advisory."
+        path="/services"
+      />
       <Navbar />
 
       <div className="pt-24 bg-gradient-to-b from-brand-dark to-brand-purple">
@@ -20,10 +26,6 @@ const ServicesPage: FC = () => {
         </div>
       </div>
 
-      {/*  
-        showSmallIntro = false → hides small label + paragraph  
-        showCTA = true → button will appear  
-      */}
       <Services showSmallIntro={false} showCTA={false} />
 
       <Footer />
