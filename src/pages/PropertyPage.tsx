@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ArrowLeft, BadgeCheck, CalendarCheck, MapPin, MessageCircle, Phone, Ruler } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import Navbar from "@/components/Navbar";
@@ -6,10 +6,22 @@ import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
 import { getPropertyBySlug } from "@/data/properties";
 import { Button } from "@/components/ui/button";
+import { trackEvent } from "@/lib/analytics";
 
 const PropertyPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const property = slug ? getPropertyBySlug(slug) : undefined;
+
+  useEffect(() => {
+    if (property) {
+      trackEvent("property_view", {
+        property_slug: property.slug,
+        property_type: property.type,
+        location: property.location,
+        status: property.status,
+      });
+    }
+  }, [property]);
 
   if (!property) {
     return (
@@ -32,6 +44,7 @@ const PropertyPage: React.FC = () => {
     : undefined;
   const whatsappNumber = (property.whatsappPhone || property.enquiryPhone).replace(/\D/g, "");
   const whatsappText = encodeURIComponent(`Hi Anantha Real Estate, I am interested in ${property.name} at ${property.location}. Please share the current availability and details.`);
+  const eventContext = { property_slug: property.slug, property_type: property.type, location: property.location };
 
   return (
     <div className="min-h-screen">
@@ -114,7 +127,7 @@ const PropertyPage: React.FC = () => {
                 <div className="mt-12 flex flex-wrap gap-4">
                   {property.sourceRoute && <Button asChild variant="outline"><Link to={property.sourceRoute}>View Project Page</Link></Button>}
                   {property.mapsUrl && <Button asChild variant="outline"><a href={property.mapsUrl} target="_blank" rel="noopener noreferrer"><MapPin size={17} /> View Map</a></Button>}
-                  <Button asChild variant="brand"><a href={`tel:${property.enquiryPhone}`}><Phone size={17} /> Call Now</a></Button>
+                  <Button asChild variant="brand"><a href={`tel:${property.enquiryPhone}`} onClick={() => trackEvent("phone_click", eventContext)}><Phone size={17} /> Call Now</a></Button>
                 </div>
               </article>
 
@@ -122,9 +135,9 @@ const PropertyPage: React.FC = () => {
                 <h2 className="font-display text-2xl font-bold mb-5">Interested in this property?</h2>
                 <p className="text-muted-foreground mb-6">Speak with Anantha Real Estate to reconfirm current availability, pricing and arrange a site visit.</p>
                 <div className="space-y-3">
-                  <Button asChild variant="brand" className="w-full"><a href="https://calendly.com/jvk-aconsultancy/30min" target="_blank" rel="noopener noreferrer">Book a Site Visit</a></Button>
-                  <Button asChild variant="outline" className="w-full"><a href={`https://wa.me/${whatsappNumber}?text=${whatsappText}`} target="_blank" rel="noopener noreferrer"><MessageCircle size={17} /> WhatsApp</a></Button>
-                  <Button asChild variant="outline" className="w-full"><a href={`tel:${property.enquiryPhone}`}><Phone size={17} /> Call {property.enquiryPhone.replace("+91", "+91 ")}</a></Button>
+                  <Button asChild variant="brand" className="w-full"><a href="https://calendly.com/jvk-aconsultancy/30min" target="_blank" rel="noopener noreferrer" onClick={() => trackEvent("site_visit_click", eventContext)}>Book a Site Visit</a></Button>
+                  <Button asChild variant="outline" className="w-full"><a href={`https://wa.me/${whatsappNumber}?text=${whatsappText}`} target="_blank" rel="noopener noreferrer" onClick={() => trackEvent("whatsapp_click", eventContext)}><MessageCircle size={17} /> WhatsApp</a></Button>
+                  <Button asChild variant="outline" className="w-full"><a href={`tel:${property.enquiryPhone}`} onClick={() => trackEvent("phone_click", eventContext)}><Phone size={17} /> Call {property.enquiryPhone.replace("+91", "+91 ")}</a></Button>
                 </div>
                 <p className="mt-6 text-xs leading-relaxed text-muted-foreground">Listing availability, price, approvals and property documents can change. Please reconfirm all material details with our team and complete independent legal/document verification before making a purchase decision.</p>
               </aside>
