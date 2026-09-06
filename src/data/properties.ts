@@ -8,6 +8,7 @@ export type Property = {
   location: string;
   city: string;
   developer?: string;
+  projectSlug?: string;
   shortDescription: string;
   description: string;
   highlights: string[];
@@ -15,32 +16,10 @@ export type Property = {
   sourceRoute?: string;
 };
 
-// Only verified project information is stored here. Add new listings after their
-// approved public details have been confirmed by the Anantha team.
-export const properties: Property[] = [
-  {
-    slug: "central-world-nellore",
-    name: "Central World",
-    type: "township",
-    status: "available",
-    location: "Kanaparthi Padu, Nellore",
-    city: "Nellore",
-    developer: "Green Home Developers",
-    shortDescription:
-      "A 125-acre premium township with a 31,000 sq ft clubhouse in Nellore.",
-    description:
-      "Central World is a premium township by Green Home Developers at Kanaparthi Padu, Nellore. The project is presented as NUDA and RERA approved and within NMC limits. Anantha Real Estate markets the project and assists with site visits.",
-    highlights: [
-      "125-acre township",
-      "31,000 sq ft clubhouse",
-      "Kanaparthi Padu, Nellore",
-      "NUDA & RERA approved",
-      "NMC limits",
-    ],
-    enquiryPhone: "+919391675372",
-    sourceRoute: "/centralworld",
-  },
-];
+// Individual property inventory is intentionally separate from project inventory.
+// A project can contain many individual properties or units. Add a property only
+// after its approved public details have been confirmed by the Anantha team.
+export const properties: Property[] = [];
 
 export const propertyCategories = [
   {
