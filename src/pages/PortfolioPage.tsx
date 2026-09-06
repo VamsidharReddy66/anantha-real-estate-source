@@ -2,10 +2,16 @@ import React from "react";
 import Navbar from "@/components/Navbar";
 import Portfolio from "@/components/Portfolio";
 import Footer from "@/components/Footer";
+import SEO from "@/components/SEO";
 
 const PortfolioPage: React.FC = () => {
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Properties in Nellore | Anantha Real Estate Portfolio"
+        description="Explore residential and land property opportunities in Nellore through Anantha Real Estate. View selected properties and book a site visit with our team."
+        path="/portfolio"
+      />
       <Navbar />
 
       <div className="pt-24 bg-gradient-to-b from-brand-dark to-brand-purple">
@@ -14,14 +20,12 @@ const PortfolioPage: React.FC = () => {
             Our Portfolio
           </h1>
           <p className="text-cream/70 text-center max-w-2xl mx-auto font-body">
-            Explore our collection of premium properties across Bangalore
+            Explore selected property opportunities across Nellore and surrounding areas.
           </p>
         </div>
       </div>
 
-      {/* Use Portfolio with the CTA pointing to Calendly (external) */}
       <Portfolio
-        /* show all items by default; pass limit if desired e.g. limit={6} */
         buttonText="Book Your Site Visit"
         buttonLink="https://calendly.com/jvk-aconsultancy/30min"
         external={true}
