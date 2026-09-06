@@ -5,20 +5,30 @@ export type Property = {
   name: string;
   type: "plots" | "apartments" | "villas" | "commercial" | "land" | "township";
   status: PropertyStatus;
+  verified: boolean;
   location: string;
   city: string;
   developer?: string;
   projectSlug?: string;
+  projectName?: string;
+  area?: string;
+  price?: number;
+  priceLabel?: string;
   shortDescription: string;
   description: string;
   highlights: string[];
   enquiryPhone: string;
   sourceRoute?: string;
+  image?: string;
+  gallery?: string[];
+  publishedAt?: string;
+  updatedAt?: string;
 };
 
-// Individual property inventory is intentionally separate from project inventory.
-// A project can contain many individual properties or units. Add a property only
-// after its approved public details have been confirmed by the Anantha team.
+// Customer-facing inventory is intentionally separate from project inventory.
+// Only approved public fields belong here. Never publish private owner details,
+// confidential documents, or unverified pricing/availability.
+// Add a listing only after the Anantha team has confirmed the public details.
 export const properties: Property[] = [];
 
 export const propertyCategories = [
@@ -51,3 +61,6 @@ export const propertyCategories = [
 
 export const getPropertyBySlug = (slug: string) =>
   properties.find((property) => property.slug === slug);
+
+export const getPropertiesByProject = (projectSlug: string) =>
+  properties.filter((property) => property.projectSlug === projectSlug);
