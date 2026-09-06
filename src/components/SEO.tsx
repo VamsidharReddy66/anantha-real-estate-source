@@ -12,15 +12,22 @@ interface SEOProps {
 }
 
 const getBreadcrumbName = (path: string) => {
+  const cleanPath = path.replace(/^\//, "").replace(/\/$/, "");
   const names: Record<string, string> = {
     about: "About",
     services: "Services",
     portfolio: "Portfolio",
+    projects: "Projects",
+    properties: "Properties",
     contact: "Contact",
     centralworld: "Central World",
   };
 
-  return names[path.replace(/^\//, "")] ?? "Page";
+  if (cleanPath.startsWith("project/")) return "Project";
+  if (cleanPath.startsWith("property/")) return "Property";
+  if (cleanPath.startsWith("properties/")) return "Property Category";
+
+  return names[cleanPath] ?? "Page";
 };
 
 const SEO = ({
@@ -70,6 +77,24 @@ const SEO = ({
   ];
 
   if (!isHome) {
+    const isProject = path.startsWith("/project/");
+    const isProperty = path.startsWith("/property/");
+    const isPropertyCategory = path.startsWith("/properties/");
+    const parentName = isProject
+      ? "Projects"
+      : isProperty
+        ? "Properties"
+        : isPropertyCategory
+          ? "Properties"
+          : undefined;
+    const parentPath = isProject
+      ? "/projects"
+      : isProperty
+        ? "/properties"
+        : isPropertyCategory
+          ? "/properties"
+          : undefined;
+
     graph.push({
       "@type": "BreadcrumbList",
       itemListElement: [
@@ -79,12 +104,29 @@ const SEO = ({
           name: "Home",
           item: SITE_URL,
         },
-        {
-          "@type": "ListItem",
-          position: 2,
-          name: pageName,
-          item: canonicalUrl,
-        },
+        ...(parentName && parentPath
+          ? [
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: parentName,
+                item: `${SITE_URL}${parentPath}`,
+              },
+              {
+                "@type": "ListItem",
+                position: 3,
+                name: pageName,
+                item: canonicalUrl,
+              },
+            ]
+          : [
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: pageName,
+                item: canonicalUrl,
+              },
+            ]),
       ],
     });
   }
