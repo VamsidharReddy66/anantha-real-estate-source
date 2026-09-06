@@ -19,7 +19,7 @@ const Navbar = () => {
     { name: "Home", href: "/" },
     { name: "About", href: "/about" },
     { name: "Services", href: "/services" },
-    { name: "Portfolio", href: "/portfolio" },
+    { name: "Properties", href: "/properties" },
     { name: "Contact", href: "/contact" },
   ];
 
@@ -35,8 +35,6 @@ const Navbar = () => {
       }`}
     >
       <div className="container mx-auto px-4 flex items-center justify-between">
-        
-        {/* LEFT — Navigation */}
         <nav className="hidden lg:flex items-center gap-8 flex-1">
           {navLinks.map((link) => (
             <Link
@@ -51,18 +49,16 @@ const Navbar = () => {
           ))}
         </nav>
 
-        {/* CENTER — Logo (BIGGER) */}
         <div className="flex justify-center flex-1">
           <Link to="/" className="flex items-center justify-center">
             <img
               src={logo}
               alt="Anantha Real Estate Logo"
-              className="h-20 w-auto"  // <-- Increased size from h-12 to h-16
+              className="h-20 w-auto"
             />
           </Link>
         </div>
 
-        {/* RIGHT — Phone + Button */}
         <div className="hidden lg:flex items-center gap-4 flex-1 justify-end">
           <a
             href="tel:+919391675372"
@@ -75,24 +71,23 @@ const Navbar = () => {
           </a>
 
           <Button variant={showTransparent ? "hero" : "brand"} size="lg" asChild>
-            <Link to="https://calendly.com/jvk-aconsultancy/30min">
+            <a href="https://calendly.com/jvk-aconsultancy/30min" target="_blank" rel="noopener noreferrer">
               Get Consultation
-            </Link>
+            </a>
           </Button>
         </div>
 
-        {/* MOBILE MENU BUTTON */}
         <button
           className={`lg:hidden p-2 transition-colors ${
             showTransparent ? "text-cream" : "text-foreground"
           }`}
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
         >
           {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
-      {/* MOBILE MENU */}
       {isMobileMenuOpen && (
         <div className="lg:hidden absolute top-full left-0 right-0 bg-card shadow-elevated animate-fade-in">
           <nav className="container mx-auto px-4 py-6 flex flex-col gap-4">
