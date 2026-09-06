@@ -8,6 +8,9 @@ import AboutPage from "./pages/AboutPage";
 import ServicesPage from "./pages/ServicesPage";
 import PortfolioPage from "./pages/PortfolioPage";
 import ContactPage from "./pages/ContactPage";
+import PropertiesPage from "./pages/PropertiesPage";
+import PropertyCategoryPage from "./pages/PropertyCategoryPage";
+import PropertyPage from "./pages/PropertyPage";
 import NotFound from "./pages/NotFound";
 import CentralWorld from "./pages/centralworld";
 import ScrollToTop from "./components/ScrollToTop";
@@ -26,9 +29,12 @@ const App = () => (
           <Route path="/about" element={<AboutPage />} />
           <Route path="/services" element={<ServicesPage />} />
           <Route path="/portfolio" element={<PortfolioPage />} />
+          <Route path="/properties" element={<PropertiesPage />} />
+          <Route path="/properties/:category" element={<PropertyCategoryPage />} />
+          <Route path="/property/:slug" element={<PropertyPage />} />
           <Route path="/contact" element={<ContactPage />} />
-          <Route path="*" element={<NotFound />} />
           <Route path="/centralworld" element={<CentralWorld />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
