@@ -1,38 +1,53 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, MapPin } from "lucide-react";
 import heroImage from "@/assets/hero.png";
 
 const Hero = () => {
-
   return (
-    <section id="home" className="relative min-h-screen flex items-center">
-      <div className="absolute inset-0 z-0">
-        <img src={heroImage} alt="Luxury property" className="w-full h-full object-cover" />
+    <section id="home" className="relative min-h-[88vh] flex items-end overflow-hidden bg-primary">
+      <div className="absolute inset-0">
+        <img
+          src={heroImage}
+          alt="Real estate in Nellore"
+          className="h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/45 to-black/10" />
       </div>
-      <div className="container mx-auto px-4 relative z-10 pt-32">
-        <div className="max-w-3xl">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/20 border border-accent/30 mb-6 animate-fade-up">
-            <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-            <span className="text-gold-light text-sm font-medium">Trusted Real Estate Partner Since 2018</span>
+
+      <div className="container mx-auto px-4 relative z-10 pb-16 md:pb-24 pt-40">
+        <div className="max-w-4xl">
+          <div className="flex items-center gap-2 text-cream/80 text-sm mb-6">
+            <MapPin size={16} />
+            <span>Nellore, Andhra Pradesh</span>
           </div>
-          <h1 className="font-display text-5xl md:text-6xl lg:text-7.5xl font-bold text-cream leading-tight mb-6 animate-fade-up" style={{ animationDelay: "0.1s" }}>
-            Find Your<span className="block text-accent text-6xl md:text-7xl lg:text-8xl">Dream Property</span>
+
+          <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-semibold text-cream leading-[1.04] max-w-3xl">
+            Real estate guidance built around the right property, not the pressure to buy.
           </h1>
-          <p className="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-cream leading-tight mb-6 animate-fade-up" style={{ animationDelay: "0.1s" }}>
-            Buy, Sell, or Invest
+
+          <p className="mt-7 text-base md:text-lg text-cream/80 leading-relaxed max-w-2xl font-body">
+            Explore residential, commercial and investment opportunities across Nellore with clear information, local market context and direct support from Anantha Real Estate.
           </p>
-          <p className="text-cream/80 text-lg md:text-xl mb-8 max-w-xl font-body leading-relaxed animate-fade-up" style={{ animationDelay: "0.2s" }}>
-            We simplify every step of your Real Estate journey, ensuring a seamless experience from start to finish.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 mb-16 animate-fade-up" style={{ animationDelay: "0.3s" }}>
-            <Button variant="hero" size="xl" asChild><Link to="/portfolio">Explore Properties<ArrowRight size={20} /></Link></Button>
-            <Button variant="heroOutline" size="xl" asChild><Link to="/contact">Contact Us</Link></Button>
+
+          <div className="flex flex-col sm:flex-row gap-3 mt-9">
+            <Button variant="hero" size="xl" asChild>
+              <Link to="/properties">
+                Explore Properties <ArrowRight size={18} />
+              </Link>
+            </Button>
+            <Button variant="heroOutline" size="xl" asChild>
+              <Link to="/projects">View Projects</Link>
+            </Button>
           </div>
-          <div className="pt-4" />
+        </div>
+
+        <div className="mt-14 pt-6 border-t border-white/20 grid sm:grid-cols-3 gap-4 max-w-3xl text-cream/80 text-sm">
+          <div><span className="text-cream font-medium block mb-1">Local Focus</span>Nellore and surrounding growth corridors</div>
+          <div><span className="text-cream font-medium block mb-1">Property Types</span>Residential, commercial and land</div>
+          <div><span className="text-cream font-medium block mb-1">Direct Support</span>Enquiry, site visit and advisory</div>
         </div>
       </div>
-      
     </section>
   );
 };
