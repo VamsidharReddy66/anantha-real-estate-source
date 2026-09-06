@@ -1,24 +1,43 @@
 import React from "react";
-import { ArrowRight, BadgeCheck, MapPin, Ruler } from "lucide-react";
+import { ArrowRight, BadgeCheck, CalendarCheck, MapPin, Ruler } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { Property } from "@/data/properties";
 
 const formatStatus = (status: Property["status"]) =>
   status.replace("-", " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
 
+const formatDate = (date?: string) => {
+  if (!date) return undefined;
+  const parsed = new Date(date);
+  if (Number.isNaN(parsed.getTime())) return undefined;
+  return parsed.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+};
+
 const PropertyListingCard: React.FC<{ property: Property }> = ({ property }) => {
+  const verificationDate = formatDate(property.lastVerifiedAt);
+
   return (
     <article className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm hover:shadow-elevated transition-shadow">
-      <div className="aspect-[16/9] bg-gradient-to-br from-brand-dark to-brand-purple flex items-end p-5">
-        <div className="flex w-full items-center justify-between gap-3">
-          <span className="rounded-full bg-background/95 px-3 py-1 text-xs font-semibold capitalize text-foreground">
-            {formatStatus(property.status)}
-          </span>
-          {property.verified && (
-            <span className="inline-flex items-center gap-1 rounded-full bg-background/95 px-3 py-1 text-xs font-semibold text-foreground">
-              <BadgeCheck size={14} className="text-accent" /> Verified listing
+      <div className="relative aspect-[16/9] bg-gradient-to-br from-brand-dark to-brand-purple overflow-hidden">
+        {property.image ? (
+          <img
+            src={property.image}
+            alt={property.imageAlt || `${property.name} in ${property.location}`}
+            className="h-full w-full object-cover"
+            loading="lazy"
+          />
+        ) : null}
+        <div className="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-black/60 to-transparent">
+          <div className="flex w-full items-center justify-between gap-3">
+            <span className="rounded-full bg-background/95 px-3 py-1 text-xs font-semibold capitalize text-foreground">
+              {formatStatus(property.status)}
             </span>
-          )}
+            {property.verified && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-background/95 px-3 py-1 text-xs font-semibold text-foreground">
+                <BadgeCheck size={14} className="text-accent" /> Listing details checked
+              </span>
+            )}
+          </div>
         </div>
       </div>
 
@@ -49,6 +68,12 @@ const PropertyListingCard: React.FC<{ property: Property }> = ({ property }) => 
         {property.projectName && (
           <p className="text-sm text-muted-foreground mt-4">
             Project: <span className="font-medium text-foreground">{property.projectName}</span>
+          </p>
+        )}
+
+        {verificationDate && (
+          <p className="mt-3 inline-flex items-center gap-2 text-xs text-muted-foreground">
+            <CalendarCheck size={14} /> Listing details checked {verificationDate}
           </p>
         )}
 
