@@ -20,62 +20,50 @@ const Portfolio: React.FC<PortfolioProps> = ({
   const list = limit ? propertyCategories.slice(0, limit) : propertyCategories;
 
   return (
-    <section id="portfolio" className="py-24 bg-background">
+    <section id="portfolio" className="py-20 md:py-28 bg-background section-rule">
       <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16">
+        <div className="grid lg:grid-cols-[0.8fr_1.2fr] gap-8 lg:gap-20 items-end mb-12 md:mb-16">
           <div>
-            <span className="text-accent font-medium text-sm tracking-wider uppercase mb-4 block">
-              Explore Properties
-            </span>
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground">
-              Find Your
-              <span className="text-accent block">Property</span>
+            <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground mb-5">Browse by property type</p>
+            <h2 className="font-display text-3xl md:text-5xl font-semibold leading-[1.1] text-foreground">
+              Start with what you are looking for.
             </h2>
           </div>
-          <p className="text-muted-foreground max-w-md mt-4 md:mt-0 font-body">
-            Browse property opportunities in Nellore by property type. Individual listings are added as verified inventory becomes available.
+          <p className="text-muted-foreground text-base md:text-lg leading-relaxed max-w-2xl">
+            Explore property opportunities across Nellore by category. Individual listings appear as inventory is verified and made available for customers.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="border-t border-border">
           {list.map((category, index) => (
             <Link
               key={category.slug}
               to={`/properties/${category.slug}`}
-              className="group bg-card rounded-2xl overflow-hidden border border-border hover:border-accent/30 transition-all duration-500 hover:shadow-elevated"
-              style={{ animationDelay: `${index * 0.05}s` }}
+              className="group grid md:grid-cols-[90px_1fr_auto] gap-4 md:gap-8 items-center py-7 border-b border-border"
             >
-              <div className="aspect-[4/3] bg-gradient-to-br from-muted to-secondary relative overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,hsl(var(--accent)/0.1),transparent_70%)]" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="font-display text-5xl text-accent/20 font-bold text-center px-6">
-                    {category.name}
-                  </span>
-                </div>
-              </div>
-
-              <div className="p-6">
-                <h3 className="font-display text-2xl font-bold group-hover:text-accent transition-colors">
+              <span className="text-sm text-muted-foreground">0{index + 1}</span>
+              <div>
+                <h3 className="font-display text-2xl md:text-3xl font-semibold text-foreground group-hover:text-accent transition-colors">
                   {category.name}
                 </h3>
-                <p className="text-muted-foreground mt-2 mb-5">{category.description}</p>
-                <span className="inline-flex items-center gap-2 text-sm font-semibold text-accent">
-                  Explore {category.name} <ArrowRight size={16} />
-                </span>
+                <p className="text-muted-foreground mt-2 max-w-2xl">{category.description}</p>
+              </div>
+              <div className="hidden md:flex h-10 w-10 items-center justify-center border border-border group-hover:border-accent group-hover:text-accent transition-colors">
+                <ArrowRight size={17} />
               </div>
             </Link>
           ))}
         </div>
 
-        <div className="text-center mt-12">
+        <div className="mt-10">
           <Button variant="brand" size="lg" asChild>
             {external ? (
               <a href={buttonLink} target="_blank" rel="noopener noreferrer">
-                {buttonText} <ArrowRight size={18} />
+                {buttonText} <ArrowRight size={17} />
               </a>
             ) : (
               <Link to={buttonLink}>
-                {buttonText} <ArrowRight size={18} />
+                {buttonText} <ArrowRight size={17} />
               </Link>
             )}
           </Button>
