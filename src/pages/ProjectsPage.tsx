@@ -1,5 +1,7 @@
 import { ArrowRight, Building2, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { projects } from "@/data/projects";
@@ -12,6 +14,7 @@ const ProjectsPage = () => {
         description="Explore residential, township and commercial projects marketed by Anantha Real Estate in Nellore. Discover project details, developer information and dedicated project landing pages."
         path="/projects"
       />
+      <Navbar />
 
       <main className="pt-32 pb-24">
         <div className="container mx-auto px-4">
@@ -91,6 +94,7 @@ const ProjectsPage = () => {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 };
