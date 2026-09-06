@@ -11,6 +11,18 @@ interface SEOProps {
   image?: string;
 }
 
+const getBreadcrumbName = (path: string) => {
+  const names: Record<string, string> = {
+    about: "About",
+    services: "Services",
+    portfolio: "Portfolio",
+    contact: "Contact",
+    centralworld: "Central World",
+  };
+
+  return names[path.replace(/^\//, "")] ?? "Page";
+};
+
 const SEO = ({
   title,
   description,
@@ -18,44 +30,68 @@ const SEO = ({
   image = DEFAULT_IMAGE,
 }: SEOProps) => {
   const canonicalUrl = `${SITE_URL}${path === "/" ? "" : path}`;
+  const isHome = path === "/";
+  const pageName = getBreadcrumbName(path);
+
+  const graph: Record<string, unknown>[] = [
+    {
+      "@type": "RealEstateAgent",
+      "@id": BUSINESS_ID,
+      name: "Anantha Real Estate",
+      url: SITE_URL,
+      logo: DEFAULT_IMAGE,
+      image: DEFAULT_IMAGE,
+      telephone: "+916302966604",
+      email: "jvk.aconsultancy@gmail.com",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "Sathyanarayanapuram, Mypadu Road",
+        addressLocality: "Nellore",
+        addressRegion: "Andhra Pradesh",
+        postalCode: "524002",
+        addressCountry: "IN",
+      },
+      areaServed: {
+        "@type": "City",
+        name: "Nellore",
+      },
+      sameAs: [
+        "https://www.instagram.com/anantha_real_estate",
+        "https://youtube.com/@ananthaconsultancy",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: "Anantha Real Estate",
+      publisher: { "@id": BUSINESS_ID },
+    },
+  ];
+
+  if (!isHome) {
+    graph.push({
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: SITE_URL,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: pageName,
+          item: canonicalUrl,
+        },
+      ],
+    });
+  }
 
   const structuredData = {
     "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "RealEstateAgent",
-        "@id": BUSINESS_ID,
-        name: "Anantha Real Estate",
-        url: SITE_URL,
-        logo: DEFAULT_IMAGE,
-        image: DEFAULT_IMAGE,
-        telephone: "+916302966604",
-        email: "jvk.aconsultancy@gmail.com",
-        address: {
-          "@type": "PostalAddress",
-          streetAddress: "Sathyanarayanapuram, Mypadu Road",
-          addressLocality: "Nellore",
-          addressRegion: "Andhra Pradesh",
-          postalCode: "524002",
-          addressCountry: "IN",
-        },
-        areaServed: {
-          "@type": "City",
-          name: "Nellore",
-        },
-        sameAs: [
-          "https://www.instagram.com/anantha_real_estate",
-          "https://youtube.com/@ananthaconsultancy",
-        ],
-      },
-      {
-        "@type": "WebSite",
-        "@id": `${SITE_URL}/#website`,
-        url: SITE_URL,
-        name: "Anantha Real Estate",
-        publisher: { "@id": BUSINESS_ID },
-      },
-    ],
+    "@graph": graph,
   };
 
   return (
