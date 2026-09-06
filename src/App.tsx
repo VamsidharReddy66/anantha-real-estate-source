@@ -22,6 +22,7 @@ import NotFound from "./pages/NotFound";
 import CentralWorld from "./pages/centralworld";
 import ScrollToTop from "./components/ScrollToTop";
 import AnalyticsPageView from "./components/AnalyticsPageView";
+import GoogleMeasurement from "./components/GoogleMeasurement";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <GoogleMeasurement />
       <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <ScrollToTop />
         <AnalyticsPageView />
