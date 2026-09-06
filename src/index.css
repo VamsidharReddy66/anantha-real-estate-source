@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Libre+Franklin:wght@500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,77 +6,80 @@
 
 @layer base {
   :root {
-    --background: 210 20% 98%;
-    --foreground: 230 40% 15%;
-    --card: 0 0% 100%;
-    --card-foreground: 230 40% 15%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 230 40% 15%;
-    --primary: 230 50% 25%;
-    --primary-foreground: 210 20% 98%;
-    --secondary: 210 30% 94%;
-    --secondary-foreground: 230 40% 15%;
-    --muted: 210 20% 92%;
-    --muted-foreground: 230 15% 45%;
-    --accent: 200 100% 50%;
-    --accent-foreground: 230 50% 15%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 210 20% 88%;
-    --input: 210 20% 88%;
-    --ring: 200 100% 50%;
-    --radius: 0.5rem;
-    --brand-cyan: 200 100% 50%;
-    --brand-blue: 215 90% 45%;
-    --brand-indigo: 230 60% 35%;
-    --brand-purple: 245 50% 28%;
-    --brand-dark: 230 50% 20%;
-    --gold: 200 100% 50%;
-    --gold-light: 195 100% 65%;
-    --gold-dark: 215 90% 40%;
-    --navy: 230 50% 20%;
-    --navy-light: 230 40% 30%;
-    --cream: 210 20% 98%;
-    --cream-dark: 210 15% 92%;
-    --shadow-soft: 0 4px 20px hsl(230 50% 15% / 0.08);
-    --shadow-elevated: 0 8px 30px hsl(230 50% 15% / 0.12);
-    --shadow-brand: 0 4px 20px hsl(200 100% 50% / 0.3);
-    --font-display: 'Playfair Display', serif;
-    --font-body: 'Inter', sans-serif;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --background: 42 24% 97%;
+    --foreground: 154 18% 14%;
+    --card: 42 30% 99%;
+    --card-foreground: 154 18% 14%;
+    --popover: 42 30% 99%;
+    --popover-foreground: 154 18% 14%;
+    --primary: 154 24% 20%;
+    --primary-foreground: 42 24% 97%;
+    --secondary: 40 18% 93%;
+    --secondary-foreground: 154 18% 14%;
+    --muted: 40 16% 92%;
+    --muted-foreground: 150 7% 42%;
+    --accent: 34 46% 47%;
+    --accent-foreground: 42 24% 98%;
+    --destructive: 0 70% 48%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 40 13% 84%;
+    --input: 40 13% 84%;
+    --ring: 154 24% 20%;
+    --radius: 0.25rem;
+    --brand-cyan: 154 24% 20%;
+    --brand-blue: 154 24% 20%;
+    --brand-indigo: 154 24% 20%;
+    --brand-purple: 154 24% 20%;
+    --brand-dark: 154 24% 16%;
+    --gold: 34 46% 47%;
+    --gold-light: 35 40% 65%;
+    --gold-dark: 34 42% 36%;
+    --navy: 154 24% 16%;
+    --navy-light: 154 18% 25%;
+    --cream: 42 24% 97%;
+    --cream-dark: 40 18% 91%;
+    --shadow-soft: 0 8px 24px hsl(154 18% 14% / 0.06);
+    --shadow-elevated: 0 16px 40px hsl(154 18% 14% / 0.09);
+    --shadow-brand: none;
+    --font-display: 'Libre Franklin', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --sidebar-background: 42 24% 97%;
+    --sidebar-foreground: 154 18% 14%;
+    --sidebar-primary: 154 24% 20%;
+    --sidebar-primary-foreground: 42 24% 97%;
+    --sidebar-accent: 40 18% 93%;
+    --sidebar-accent-foreground: 154 18% 14%;
+    --sidebar-border: 40 13% 84%;
+    --sidebar-ring: 154 24% 20%;
   }
+
   .dark {
-    --background: 230 50% 8%;
-    --foreground: 210 20% 98%;
-    --card: 230 50% 12%;
-    --card-foreground: 210 20% 98%;
-    --popover: 230 50% 12%;
-    --popover-foreground: 210 20% 98%;
-    --primary: 200 100% 50%;
-    --primary-foreground: 230 50% 12%;
-    --secondary: 230 40% 20%;
-    --secondary-foreground: 210 20% 98%;
-    --muted: 230 40% 18%;
-    --muted-foreground: 210 20% 65%;
-    --accent: 200 100% 50%;
-    --accent-foreground: 230 50% 12%;
-    --border: 230 40% 20%;
-    --input: 230 40% 20%;
-    --ring: 200 100% 50%;
+    --background: 154 20% 9%;
+    --foreground: 42 20% 94%;
+    --card: 154 18% 12%;
+    --card-foreground: 42 20% 94%;
+    --popover: 154 18% 12%;
+    --popover-foreground: 42 20% 94%;
+    --primary: 42 20% 94%;
+    --primary-foreground: 154 20% 10%;
+    --secondary: 154 14% 17%;
+    --secondary-foreground: 42 20% 94%;
+    --muted: 154 14% 17%;
+    --muted-foreground: 42 10% 68%;
+    --accent: 34 46% 55%;
+    --accent-foreground: 154 20% 10%;
+    --border: 154 10% 22%;
+    --input: 154 10% 22%;
+    --ring: 42 20% 94%;
   }
 }
 
 @layer base {
   * { @apply border-border; }
+  html { scroll-behavior: smooth; }
   body { @apply bg-background text-foreground font-body antialiased; }
-  h1, h2, h3, h4, h5, h6 { @apply font-display; }
+  h1, h2, h3, h4, h5, h6 { @apply font-display tracking-[-0.02em]; }
+  ::selection { background: hsl(var(--accent) / 0.18); }
 }
 
 @layer utilities {
@@ -84,10 +87,27 @@
   .font-body { font-family: var(--font-body); }
   .shadow-soft { box-shadow: var(--shadow-soft); }
   .shadow-elevated { box-shadow: var(--shadow-elevated); }
-  .shadow-brand { box-shadow: var(--shadow-brand); }
-  .animate-fade-up { animation: fadeUp 0.6s ease-out forwards; }
-  .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
+  .shadow-brand { box-shadow: none; }
+  .animate-fade-up { animation: fadeUp 0.45s ease-out both; }
+  .animate-fade-in { animation: fadeIn 0.35s ease-out both; }
+  .section-rule { border-top: 1px solid hsl(var(--border)); }
 }
 
-@keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
