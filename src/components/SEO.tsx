@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet-async";
 const SITE_URL = "https://www.anantharealestate.in";
 const DEFAULT_IMAGE = `${SITE_URL}/ANANTHA%20LOGO.png`;
 const BUSINESS_ID = `${SITE_URL}/#business`;
+const GOOGLE_SITE_VERIFICATION = import.meta.env.VITE_GOOGLE_SITE_VERIFICATION?.trim();
 
 interface SEOProps {
   title: string;
@@ -19,23 +20,28 @@ const getBreadcrumbName = (path: string) => {
     portfolio: "Portfolio",
     projects: "Projects",
     properties: "Properties",
+    contact: "Contact",
+    centralworld: "Central World",
     "buy-property": "Buy Property",
     "sell-your-property": "Sell Your Property",
     locations: "Locations",
     "property-intelligence": "Property Intelligence",
-    contact: "Contact",
-    centralworld: "Central World",
   };
 
   if (cleanPath.startsWith("project/")) return "Project";
   if (cleanPath.startsWith("property/")) return "Property";
   if (cleanPath.startsWith("properties/")) return "Property Category";
-  if (cleanPath.startsWith("locations/")) return "Location Guide";
+  if (cleanPath.startsWith("locations/")) return "Location";
 
   return names[cleanPath] ?? "Page";
 };
 
-const SEO = ({ title, description, path = "/", image = DEFAULT_IMAGE }: SEOProps) => {
+const SEO = ({
+  title,
+  description,
+  path = "/",
+  image = DEFAULT_IMAGE,
+}: SEOProps) => {
   const canonicalUrl = `${SITE_URL}${path === "/" ? "" : path}`;
   const isHome = path === "/";
   const pageName = getBreadcrumbName(path);
@@ -78,20 +84,8 @@ const SEO = ({ title, description, path = "/", image = DEFAULT_IMAGE }: SEOProps
     const isProperty = path.startsWith("/property/");
     const isPropertyCategory = path.startsWith("/properties/");
     const isLocation = path.startsWith("/locations/");
-    const parentName = isProject
-      ? "Projects"
-      : isProperty || isPropertyCategory
-        ? "Properties"
-        : isLocation
-          ? "Locations"
-          : undefined;
-    const parentPath = isProject
-      ? "/projects"
-      : isProperty || isPropertyCategory
-        ? "/properties"
-        : isLocation
-          ? "/locations"
-          : undefined;
+    const parentName = isProject ? "Projects" : isProperty || isPropertyCategory ? "Properties" : isLocation ? "Locations" : undefined;
+    const parentPath = isProject ? "/projects" : isProperty || isPropertyCategory ? "/properties" : isLocation ? "/locations" : undefined;
 
     graph.push({
       "@type": "BreadcrumbList",
@@ -113,6 +107,7 @@ const SEO = ({ title, description, path = "/", image = DEFAULT_IMAGE }: SEOProps
     <Helmet>
       <title>{title}</title>
       <meta name="description" content={description} />
+      {GOOGLE_SITE_VERIFICATION && <meta name="google-site-verification" content={GOOGLE_SITE_VERIFICATION} />}
       <link rel="canonical" href={canonicalUrl} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
