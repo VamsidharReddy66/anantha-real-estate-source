@@ -1,7 +1,10 @@
 import { createRoot } from "react-dom/client";
 import { HelmetProvider } from "react-helmet-async";
 import App from "./App.tsx";
+import { initializeGoogleTags } from "./lib/googleTags";
 import "./index.css";
+
+initializeGoogleTags();
 
 createRoot(document.getElementById("root")!).render(
   <HelmetProvider>
