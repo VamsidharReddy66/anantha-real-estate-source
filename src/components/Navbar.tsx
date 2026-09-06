@@ -18,8 +18,10 @@ const Navbar = () => {
   const navLinks = [
     { name: "Properties", href: "/properties" },
     { name: "Projects", href: "/projects" },
-    { name: "Services", href: "/services" },
-    { name: "About", href: "/about" },
+    { name: "Buy", href: "/buy-property" },
+    { name: "Sell", href: "/sell-your-property" },
+    { name: "Locations", href: "/locations" },
+    { name: "Intelligence", href: "/property-intelligence" },
     { name: "Contact", href: "/contact" },
   ];
 
@@ -33,7 +35,7 @@ const Navbar = () => {
           <img src={logo} alt="Anantha Real Estate" className="h-14 w-auto" />
         </Link>
 
-        <nav className="hidden lg:flex items-center gap-7 ml-auto">
+        <nav className="hidden xl:flex items-center gap-5 ml-auto">
           {navLinks.map((link) => {
             const active = location.pathname === link.href || location.pathname.startsWith(`${link.href}/`);
             return (
@@ -48,17 +50,17 @@ const Navbar = () => {
           })}
         </nav>
 
-        <div className="hidden lg:flex items-center gap-3">
+        <div className="hidden xl:flex items-center gap-3">
           <a href="tel:+919391675372" className={`text-sm font-medium ${transparent ? "text-cream/85 hover:text-cream" : "text-foreground/75 hover:text-foreground"}`}>
             +91 93916 75372
           </a>
           <Button variant={transparent ? "heroOutline" : "brand"} size="lg" asChild>
-            <Link to="/contact">Talk to us</Link>
+            <Link to="/buy-property">Get Matched</Link>
           </Button>
         </div>
 
         <button
-          className={`lg:hidden p-2 ${transparent ? "text-cream" : "text-foreground"}`}
+          className={`xl:hidden p-2 ${transparent ? "text-cream" : "text-foreground"}`}
           onClick={() => setIsMobileMenuOpen((open) => !open)}
           aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
         >
@@ -67,7 +69,7 @@ const Navbar = () => {
       </div>
 
       {isMobileMenuOpen && (
-        <div className="lg:hidden bg-background border-t border-border">
+        <div className="xl:hidden bg-background border-t border-border max-h-[78vh] overflow-y-auto">
           <nav className="container mx-auto px-4 py-6 flex flex-col">
             {navLinks.map((link) => (
               <Link
@@ -82,7 +84,7 @@ const Navbar = () => {
             <div className="pt-5 grid gap-3">
               <a href="tel:+919391675372" className="text-sm text-muted-foreground">+91 93916 75372</a>
               <Button variant="brand" asChild>
-                <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)}>Talk to us</Link>
+                <Link to="/buy-property" onClick={() => setIsMobileMenuOpen(false)}>Share Requirement</Link>
               </Button>
             </div>
           </nav>
