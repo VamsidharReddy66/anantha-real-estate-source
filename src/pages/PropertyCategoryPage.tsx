@@ -42,7 +42,7 @@ const PropertyCategoryPage: React.FC = () => {
               <ArrowLeft size={15} /> All Properties
             </Link>
             <h1 className="font-display text-4xl md:text-5xl font-bold text-cream mt-6 mb-4">{categoryInfo.name} in Nellore</h1>
-            <p className="text-cream/70 max-w-2xl">{categoryInfo.description} Browse verified customer listings below.</p>
+            <p className="text-cream/70 max-w-2xl">{categoryInfo.description} Browse customer listings below.</p>
           </div>
         </section>
 
