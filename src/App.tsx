@@ -7,10 +7,12 @@ import Index from "./pages/Index";
 import AboutPage from "./pages/AboutPage";
 import ServicesPage from "./pages/ServicesPage";
 import PortfolioPage from "./pages/PortfolioPage";
-import ContactPage from "./pages/ContactPage";
+import ProjectsPage from "./pages/ProjectsPage";
+import ProjectPage from "./pages/ProjectPage";
 import PropertiesPage from "./pages/PropertiesPage";
 import PropertyCategoryPage from "./pages/PropertyCategoryPage";
 import PropertyPage from "./pages/PropertyPage";
+import ContactPage from "./pages/ContactPage";
 import NotFound from "./pages/NotFound";
 import CentralWorld from "./pages/centralworld";
 import ScrollToTop from "./components/ScrollToTop";
@@ -29,6 +31,8 @@ const App = () => (
           <Route path="/about" element={<AboutPage />} />
           <Route path="/services" element={<ServicesPage />} />
           <Route path="/portfolio" element={<PortfolioPage />} />
+          <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/project/:slug" element={<ProjectPage />} />
           <Route path="/properties" element={<PropertiesPage />} />
           <Route path="/properties/:category" element={<PropertyCategoryPage />} />
           <Route path="/property/:slug" element={<PropertyPage />} />
