@@ -20,6 +20,7 @@ const Navbar = () => {
     { name: "About", href: "/about" },
     { name: "Services", href: "/services" },
     { name: "Properties", href: "/properties" },
+    { name: "Projects", href: "/projects" },
     { name: "Contact", href: "/contact" },
   ];
 
@@ -51,11 +52,7 @@ const Navbar = () => {
 
         <div className="flex justify-center flex-1">
           <Link to="/" className="flex items-center justify-center">
-            <img
-              src={logo}
-              alt="Anantha Real Estate Logo"
-              className="h-20 w-auto"
-            />
+            <img src={logo} alt="Anantha Real Estate Logo" className="h-20 w-auto" />
           </Link>
         </div>
 
