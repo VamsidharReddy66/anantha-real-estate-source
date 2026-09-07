@@ -4,7 +4,7 @@ import App from "./App.tsx";
 import { initializeGoogleTags } from "./lib/googleTags";
 import "./index.css";
 
-initializeGoogleTags();
+if (!window.location.pathname.startsWith("/admin")) initializeGoogleTags();
 
 createRoot(document.getElementById("root")!).render(
   <HelmetProvider>

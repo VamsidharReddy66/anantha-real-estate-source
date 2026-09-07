@@ -8,7 +8,8 @@
     "build": "vite build && node scripts/prerender.mjs",
     "build:dev": "vite build --mode development && node scripts/prerender.mjs",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:gbp": "node --test tests/gbp.test.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -46,6 +47,7 @@
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.6.0",
     "input-otp": "^1.4.2",
+    "jose": "^6.2.12",
     "lucide-react": "^0.462.0",
     "next-themes": "^0.3.0",
     "react": "^18.3.1",

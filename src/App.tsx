@@ -1,3 +1,5 @@
+import { lazy, Suspense } from "react";
+const GBPAdmin = lazy(() => import("./pages/GBPAdmin"));
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -26,37 +28,50 @@ import GoogleMeasurement from "./components/GoogleMeasurement";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <GoogleMeasurement />
-      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-        <ScrollToTop />
-        <AnalyticsPageView />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/services" element={<ServicesPage />} />
-          <Route path="/portfolio" element={<PortfolioPage />} />
-          <Route path="/projects" element={<ProjectsPage />} />
-          <Route path="/project/:slug" element={<ProjectPage />} />
-          <Route path="/properties" element={<PropertiesPage />} />
-          <Route path="/properties/:category" element={<PropertyCategoryPage />} />
-          <Route path="/property/:slug" element={<PropertyPage />} />
-          <Route path="/buy-property" element={<BuyPropertyPage />} />
-          <Route path="/sell-your-property" element={<SellPropertyPage />} />
-          <Route path="/locations" element={<LocationsPage />} />
-          <Route path="/locations/:slug" element={<LocationPage />} />
-          <Route path="/property-intelligence" element={<PropertyIntelligencePage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/centralworld" element={<CentralWorld />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () =>
+  window.location.pathname.replace(/\/$/, "") === "/admin/gbp" ? (
+    <Suspense fallback={<p>Loading admin…</p>}>
+      <GBPAdmin />
+    </Suspense>
+  ) : (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <GoogleMeasurement />
+        <BrowserRouter
+          future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+        >
+          <ScrollToTop />
+          <AnalyticsPageView />
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/services" element={<ServicesPage />} />
+            <Route path="/portfolio" element={<PortfolioPage />} />
+            <Route path="/projects" element={<ProjectsPage />} />
+            <Route path="/project/:slug" element={<ProjectPage />} />
+            <Route path="/properties" element={<PropertiesPage />} />
+            <Route
+              path="/properties/:category"
+              element={<PropertyCategoryPage />}
+            />
+            <Route path="/property/:slug" element={<PropertyPage />} />
+            <Route path="/buy-property" element={<BuyPropertyPage />} />
+            <Route path="/sell-your-property" element={<SellPropertyPage />} />
+            <Route path="/locations" element={<LocationsPage />} />
+            <Route path="/locations/:slug" element={<LocationPage />} />
+            <Route
+              path="/property-intelligence"
+              element={<PropertyIntelligencePage />}
+            />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/centralworld" element={<CentralWorld />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
 
 export default App;

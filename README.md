@@ -71,3 +71,7 @@ Yes, you can!
 To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+
+## Google Business Profile admin
+
+Secure GBP management is available at `/admin/gbp`. See [setup, supported operations, security model and official API references](docs/google-business-profile.md). Server configuration is required before sign-in is enabled. Run `npm run test:gbp` for the isolated security regression suite.
