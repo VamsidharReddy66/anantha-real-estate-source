@@ -49,7 +49,11 @@ export const initializeGoogleTags = () => {
 
   window.dataLayer = window.dataLayer || [];
 
-  // GTM owns GA4, Google Ads and Meta tags when configured.
+  // index.html loads the production GTM container in the document head.
+  // Avoid a second GTM or direct Google tag when that static snippet exists.
+  if (document.getElementById("anantha-gtm-head")) return;
+
+  // GTM owns GA4 and Google Ads tags when configured through an environment override.
   if (gtmId) {
     window.dataLayer.push({ "gtm.start": Date.now(), event: "gtm.js" });
     appendScript(
