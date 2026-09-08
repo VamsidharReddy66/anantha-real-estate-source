@@ -17,8 +17,8 @@ Meta example:
 ```
 
 The site stores campaign parameters in session storage and automatically adds
-them to analytics events. Names, phone numbers and free-text form values are
-never included in analytics payloads.
+them to analytics events. Names, phone numbers and free-text form values are never included in analytics
+payloads. Only categorical choices such as property type and timeline are sent.
 
 ## Events
 

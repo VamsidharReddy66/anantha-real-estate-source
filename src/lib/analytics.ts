@@ -67,12 +67,12 @@ export const captureAttribution = (): TrafficAttribution => {
   if (typeof window === "undefined") return {};
 
   const storage = getStorage();
-  const current = Object.fromEntries(
-    ATTRIBUTION_PARAMS.flatMap((key) => {
-      const value = new URLSearchParams(window.location.search).get(key)?.trim();
-      return value ? [[key, value]] : [];
-    }),
-  ) as TrafficAttribution;
+  const current: TrafficAttribution = {};
+  const searchParams = new URLSearchParams(window.location.search);
+  for (const key of ATTRIBUTION_PARAMS) {
+    const value = searchParams.get(key)?.trim();
+    if (value) current[key] = value;
+  }
 
   let stored: TrafficAttribution = {};
   try {

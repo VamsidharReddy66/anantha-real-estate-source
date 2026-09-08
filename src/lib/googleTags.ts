@@ -37,12 +37,13 @@ export const initializeGoogleTags = () => {
   if (typeof window === "undefined" || typeof document === "undefined") return;
 
   captureAttribution();
-  initializeMetaPixel();
 
   const gtmId = import.meta.env.VITE_GTM_ID?.trim();
   const gaMeasurementId =
     import.meta.env.VITE_GA_MEASUREMENT_ID?.trim() || DEFAULT_GA_MEASUREMENT_ID;
   const googleAdsId = import.meta.env.VITE_GOOGLE_ADS_ID?.trim();
+
+  if (!gtmId) initializeMetaPixel();
 
   window.dataLayer = window.dataLayer || [];
 

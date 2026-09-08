@@ -17,7 +17,6 @@ const SellPropertyPage = () => {
     event.preventDefault();
     setSubmitting(true);
     setResult(null);
-    trackEvent("seller_lead_submit", { property_type: form.propertyType, location: form.location, area: form.area, purpose: form.purpose });
     try {
       const response = await fetch("/api/property-listings", {
         method: "POST",
@@ -26,6 +25,11 @@ const SellPropertyPage = () => {
       });
       const payload = await response.json();
       if (!response.ok) throw new Error(payload.error || "Unable to submit property.");
+      trackEvent("seller_lead_submit", {
+        property_type: form.propertyType,
+        purpose: form.purpose,
+        seller_role: form.sellerRole,
+      });
       setResult({ ok: true, message: payload.message, propertyId: payload.propertyId });
       setForm(initialForm);
     } catch (error) {

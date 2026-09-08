@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { CheckCircle2, MessageCircle, Phone, ShieldCheck } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -19,11 +19,11 @@ const initialForm = {
 
 const PropertyConsultationPage = () => {
   const [form, setForm] = useState(initialForm);
-  const [started, setStarted] = useState(false);
+  const started = useRef(false);
 
   const markStarted = () => {
-    if (started) return;
-    setStarted(true);
+    if (started.current) return;
+    started.current = true;
     trackEvent("lead_form_start", { form_name: "property_consultation" });
   };
 
@@ -35,8 +35,6 @@ const PropertyConsultationPage = () => {
       form_name: "property_consultation",
       requirement: form.requirement,
       property_type: form.propertyType,
-      preferred_location: form.location,
-      budget_band: form.budget,
       purchase_timeline: form.timeline,
       destination: "whatsapp",
     });
