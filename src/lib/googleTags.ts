@@ -1,6 +1,7 @@
 import { captureAttribution } from "./analytics";
 
 const DEFAULT_GA_MEASUREMENT_ID = "G-4R1SSJ2EXE";
+const DEFAULT_META_PIXEL_ID = "1052131634399665";
 
 const appendScript = (src: string, id: string) => {
   if (document.getElementById(id)) return;
@@ -12,7 +13,8 @@ const appendScript = (src: string, id: string) => {
 };
 
 const initializeMetaPixel = () => {
-  const pixelId = import.meta.env.VITE_META_PIXEL_ID?.trim();
+  const pixelId =
+    import.meta.env.VITE_META_PIXEL_ID?.trim() || DEFAULT_META_PIXEL_ID;
   if (!pixelId || window.fbq) return;
 
   const pixel = ((...args: unknown[]) => {
@@ -43,7 +45,7 @@ export const initializeGoogleTags = () => {
     import.meta.env.VITE_GA_MEASUREMENT_ID?.trim() || DEFAULT_GA_MEASUREMENT_ID;
   const googleAdsId = import.meta.env.VITE_GOOGLE_ADS_ID?.trim();
 
-  if (!gtmId) initializeMetaPixel();
+  initializeMetaPixel();
 
   window.dataLayer = window.dataLayer || [];
 
