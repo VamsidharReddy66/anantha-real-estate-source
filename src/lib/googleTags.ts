@@ -1,3 +1,5 @@
+import { captureAttribution } from "./analytics";
+
 const DEFAULT_GA_MEASUREMENT_ID = "G-4R1SSJ2EXE";
 
 const appendScript = (src: string, id: string) => {
@@ -9,17 +11,42 @@ const appendScript = (src: string, id: string) => {
   document.head.appendChild(script);
 };
 
+const initializeMetaPixel = () => {
+  const pixelId = import.meta.env.VITE_META_PIXEL_ID?.trim();
+  if (!pixelId || window.fbq) return;
+
+  const pixel = ((...args: unknown[]) => {
+    if (pixel.callMethod) {
+      pixel.callMethod(...args);
+    } else {
+      pixel.queue?.push(args);
+    }
+  }) as NonNullable<Window["fbq"]>;
+
+  pixel.queue = [];
+  pixel.loaded = true;
+  pixel.version = "2.0";
+  window.fbq = pixel;
+  (window as Window & { _fbq?: Window["fbq"] })._fbq = pixel;
+
+  appendScript("https://connect.facebook.net/en_US/fbevents.js", "anantha-meta-pixel");
+  pixel("init", pixelId);
+};
+
 export const initializeGoogleTags = () => {
   if (typeof window === "undefined" || typeof document === "undefined") return;
+
+  captureAttribution();
+  initializeMetaPixel();
 
   const gtmId = import.meta.env.VITE_GTM_ID?.trim();
   const gaMeasurementId =
     import.meta.env.VITE_GA_MEASUREMENT_ID?.trim() || DEFAULT_GA_MEASUREMENT_ID;
+  const googleAdsId = import.meta.env.VITE_GOOGLE_ADS_ID?.trim();
 
   window.dataLayer = window.dataLayer || [];
 
-  // Prefer GTM when configured. Do not load direct GA4 at the same time,
-  // which would risk duplicate page views/events.
+  // GTM owns GA4, Google Ads and Meta tags when configured.
   if (gtmId) {
     window.dataLayer.push({ "gtm.start": Date.now(), event: "gtm.js" });
     appendScript(
@@ -29,17 +56,23 @@ export const initializeGoogleTags = () => {
     return;
   }
 
+  const primaryGoogleId = gaMeasurementId || googleAdsId;
+  if (!primaryGoogleId) return;
+
   appendScript(
-    `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaMeasurementId)}`,
-    "anantha-ga4",
+    `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(primaryGoogleId)}`,
+    "anantha-google-tags",
   );
 
-  window.gtag = window.gtag || function gtag(...args: unknown[]) {
-    window.dataLayer?.push(args as unknown as Record<string, unknown>);
-  };
+  window.gtag = window.gtag || ((...args: unknown[]) => {
+    window.dataLayer?.push(args);
+  });
 
   window.gtag("js", new Date());
-  window.gtag("config", gaMeasurementId, {
-    send_page_view: false,
-  });
+  if (gaMeasurementId) {
+    window.gtag("config", gaMeasurementId, { send_page_view: false });
+  }
+  if (googleAdsId) {
+    window.gtag("config", googleAdsId);
+  }
 };
