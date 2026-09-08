@@ -55,7 +55,7 @@ const Navbar = () => {
             +91 93916 75372
           </a>
           <Button variant={transparent ? "heroOutline" : "brand"} size="lg" asChild>
-            <Link to="/buy-property">Get Matched</Link>
+            <Link to="/property-consultation">Get Matched</Link>
           </Button>
         </div>
 
@@ -84,7 +84,7 @@ const Navbar = () => {
             <div className="pt-5 grid gap-3">
               <a href="tel:+919391675372" className="text-sm text-muted-foreground">+91 93916 75372</a>
               <Button variant="brand" asChild>
-                <Link to="/buy-property" onClick={() => setIsMobileMenuOpen(false)}>Share Requirement</Link>
+                <Link to="/property-consultation" onClick={() => setIsMobileMenuOpen(false)}>Free Consultation</Link>
               </Button>
             </div>
           </nav>

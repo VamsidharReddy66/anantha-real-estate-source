@@ -20,11 +20,11 @@ import LocationsPage from "./pages/LocationsPage";
 import LocationPage from "./pages/LocationPage";
 import PropertyIntelligencePage from "./pages/PropertyIntelligencePage";
 import ContactPage from "./pages/ContactPage";
+import PropertyConsultationPage from "./pages/PropertyConsultationPage";
 import NotFound from "./pages/NotFound";
 import CentralWorld from "./pages/centralworld";
 import ScrollToTop from "./components/ScrollToTop";
 import AnalyticsPageView from "./components/AnalyticsPageView";
-import GoogleMeasurement from "./components/GoogleMeasurement";
 
 const queryClient = new QueryClient();
 
@@ -38,7 +38,6 @@ const App = () =>
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <GoogleMeasurement />
         <BrowserRouter
           future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
         >
@@ -66,6 +65,7 @@ const App = () =>
               element={<PropertyIntelligencePage />}
             />
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="/property-consultation" element={<PropertyConsultationPage />} />
             <Route path="/centralworld" element={<CentralWorld />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

@@ -26,6 +26,7 @@ const getBreadcrumbName = (path: string) => {
     "sell-your-property": "Sell Your Property",
     locations: "Locations",
     "property-intelligence": "Property Intelligence",
+    "property-consultation": "Property Consultation",
   };
 
   if (cleanPath.startsWith("project/")) return "Project";
@@ -122,7 +123,7 @@ const SEO = ({
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image} />
-      <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      <script type="application/ld+json">{JSON.stringify({ "@context": "https://schema.org", "@graph": graph })}</script>
     </Helmet>
   );
 };

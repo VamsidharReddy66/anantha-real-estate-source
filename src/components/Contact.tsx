@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { trackEvent } from "@/lib/analytics";
 
 const Contact = () => {
   const { toast } = useToast();
@@ -77,6 +78,8 @@ const Contact = () => {
       if (!response.ok) {
         throw new Error("Failed to submit form");
       }
+
+      trackEvent("contact_form_submit", { form_name: "general_contact" });
 
       toast({
         title: "Message Sent!",

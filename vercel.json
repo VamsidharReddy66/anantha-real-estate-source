@@ -89,6 +89,10 @@
       "destination": "/prerender/contact.html"
     },
     {
+      "source": "/property-consultation",
+      "destination": "/prerender/property-consultation.html"
+    },
+    {
       "source": "/centralworld",
       "destination": "/prerender/centralworld.html"
     },
