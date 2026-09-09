@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 const GBPAdmin = lazy(() => import("./pages/GBPAdmin"));
+const PropertyAdmin = lazy(() => import("./pages/PropertyAdmin"));
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -24,19 +25,28 @@ import AnalyticsPageView from "./components/AnalyticsPageView";
 
 const queryClient = new QueryClient();
 
-const App = () =>
-  window.location.pathname.replace(/\/$/, "") === "/admin/gbp" ? (
-    <Suspense fallback={<p>Loading admin…</p>}>
-      <GBPAdmin />
-    </Suspense>
-  ) : (
+const App = () => {
+  const adminPath = window.location.pathname.replace(/\/$/, "");
+  if (adminPath === "/admin/gbp") {
+    return (
+      <Suspense fallback={<p>Loading admin…</p>}>
+        <GBPAdmin />
+      </Suspense>
+    );
+  }
+  if (adminPath === "/admin/properties") {
+    return (
+      <Suspense fallback={<p>Loading property verification…</p>}>
+        <PropertyAdmin />
+      </Suspense>
+    );
+  }
+  return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter
-          future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
-        >
+        <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
           <ScrollToTop />
           <AnalyticsPageView />
           <Routes>
@@ -47,15 +57,9 @@ const App = () =>
             <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/project/:slug" element={<ProjectPage />} />
             <Route path="/properties" element={<PropertiesPage />} />
-            <Route
-              path="/properties/:category"
-              element={<PropertyCategoryPage />}
-            />
+            <Route path="/properties/:category" element={<PropertyCategoryPage />} />
             <Route path="/property/:slug" element={<PropertyPage />} />
-            <Route
-              path="/property-intelligence"
-              element={<PropertyIntelligencePage />}
-            />
+            <Route path="/property-intelligence" element={<PropertyIntelligencePage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/property-consultation" element={<PropertyConsultationPage />} />
             <Route path="/centralworld" element={<CentralWorld />} />
@@ -65,5 +69,6 @@ const App = () =>
       </TooltipProvider>
     </QueryClientProvider>
   );
+};
 
 export default App;
