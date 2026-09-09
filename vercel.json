@@ -1,130 +1,38 @@
 {
   "rewrites": [
-    {
-      "source": "/api/gbp",
-      "destination": "/api/gbp"
-    },
-    {
-      "source": "/about",
-      "destination": "/prerender/about.html"
-    },
-    {
-      "source": "/services",
-      "destination": "/prerender/services.html"
-    },
-    {
-      "source": "/portfolio",
-      "destination": "/prerender/portfolio.html"
-    },
-    {
-      "source": "/projects",
-      "destination": "/prerender/projects.html"
-    },
-    {
-      "source": "/properties",
-      "destination": "/prerender/properties.html"
-    },
-    {
-      "source": "/properties/plots",
-      "destination": "/prerender/properties__plots.html"
-    },
-    {
-      "source": "/properties/apartments",
-      "destination": "/prerender/properties__apartments.html"
-    },
-    {
-      "source": "/properties/villas",
-      "destination": "/prerender/properties__villas.html"
-    },
-    {
-      "source": "/properties/commercial",
-      "destination": "/prerender/properties__commercial.html"
-    },
-    {
-      "source": "/properties/land",
-      "destination": "/prerender/properties__land.html"
-    },
-    {
-      "source": "/buy-property",
-      "destination": "/prerender/buy-property.html"
-    },
-    {
-      "source": "/sell-your-property",
-      "destination": "/prerender/sell-your-property.html"
-    },
-    {
-      "source": "/locations",
-      "destination": "/prerender/locations.html"
-    },
-    {
-      "source": "/locations/magunta-layout",
-      "destination": "/prerender/locations__magunta-layout.html"
-    },
-    {
-      "source": "/locations/kanuparthipadu",
-      "destination": "/prerender/locations__kanuparthipadu.html"
-    },
-    {
-      "source": "/locations/kakupalli",
-      "destination": "/prerender/locations__kakupalli.html"
-    },
-    {
-      "source": "/locations/mypadu-road",
-      "destination": "/prerender/locations__mypadu-road.html"
-    },
-    {
-      "source": "/locations/podalakur-road",
-      "destination": "/prerender/locations__podalakur-road.html"
-    },
-    {
-      "source": "/locations/vedayapalem",
-      "destination": "/prerender/locations__vedayapalem.html"
-    },
-    {
-      "source": "/property-intelligence",
-      "destination": "/prerender/property-intelligence.html"
-    },
-    {
-      "source": "/contact",
-      "destination": "/prerender/contact.html"
-    },
-    {
-      "source": "/property-consultation",
-      "destination": "/prerender/property-consultation.html"
-    },
-    {
-      "source": "/centralworld",
-      "destination": "/prerender/centralworld.html"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
+    { "source": "/api/gbp", "destination": "/api/gbp" },
+    { "source": "/about", "destination": "/prerender/about.html" },
+    { "source": "/services", "destination": "/prerender/services.html" },
+    { "source": "/portfolio", "destination": "/prerender/portfolio.html" },
+    { "source": "/projects", "destination": "/prerender/projects.html" },
+    { "source": "/properties", "destination": "/prerender/properties.html" },
+    { "source": "/properties/plots", "destination": "/prerender/properties__plots.html" },
+    { "source": "/properties/apartments", "destination": "/prerender/properties__apartments.html" },
+    { "source": "/properties/villas", "destination": "/prerender/properties__villas.html" },
+    { "source": "/properties/commercial", "destination": "/prerender/properties__commercial.html" },
+    { "source": "/properties/land", "destination": "/prerender/properties__land.html" },
+    { "source": "/locations", "destination": "/prerender/locations.html" },
+    { "source": "/locations/magunta-layout", "destination": "/prerender/locations__magunta-layout.html" },
+    { "source": "/locations/kanuparthipadu", "destination": "/prerender/locations__kanuparthipadu.html" },
+    { "source": "/locations/kakupalli", "destination": "/prerender/locations__kakupalli.html" },
+    { "source": "/locations/mypadu-road", "destination": "/prerender/locations__mypadu-road.html" },
+    { "source": "/locations/podalakur-road", "destination": "/prerender/locations__podalakur-road.html" },
+    { "source": "/locations/vedayapalem", "destination": "/prerender/locations__vedayapalem.html" },
+    { "source": "/property-intelligence", "destination": "/prerender/property-intelligence.html" },
+    { "source": "/contact", "destination": "/prerender/contact.html" },
+    { "source": "/property-consultation", "destination": "/prerender/property-consultation.html" },
+    { "source": "/centralworld", "destination": "/prerender/centralworld.html" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
     {
       "source": "/admin/:path*",
       "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-store"
-        },
-        {
-          "key": "X-Robots-Tag",
-          "value": "noindex, nofollow"
-        },
-        {
-          "key": "Referrer-Policy",
-          "value": "no-referrer"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        },
-        {
-          "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
-        }
+        { "key": "Cache-Control", "value": "no-store" },
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
+        { "key": "Referrer-Policy", "value": "no-referrer" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'" }
       ]
     }
   ]
