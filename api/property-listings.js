@@ -34,6 +34,10 @@ async function ensureSchema(sql) {
     owner_name TEXT NOT NULL,
     phone TEXT NOT NULL,
     seller_role TEXT NOT NULL DEFAULT 'Owner',
+    listing_source TEXT NOT NULL DEFAULT 'Direct owner',
+    agent_name TEXT,
+    agent_phone TEXT,
+    agent_agency TEXT,
     property_type TEXT NOT NULL,
     purpose TEXT NOT NULL DEFAULT 'Sell',
     location TEXT NOT NULL,
@@ -51,6 +55,10 @@ async function ensureSchema(sql) {
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
   )`;
+  await sql`ALTER TABLE property_listings ADD COLUMN IF NOT EXISTS listing_source TEXT NOT NULL DEFAULT 'Direct owner'`;
+  await sql`ALTER TABLE property_listings ADD COLUMN IF NOT EXISTS agent_name TEXT`;
+  await sql`ALTER TABLE property_listings ADD COLUMN IF NOT EXISTS agent_phone TEXT`;
+  await sql`ALTER TABLE property_listings ADD COLUMN IF NOT EXISTS agent_agency TEXT`;
   await sql`CREATE INDEX IF NOT EXISTS property_listings_status_idx ON property_listings(status)`;
   await sql`CREATE INDEX IF NOT EXISTS property_listings_location_idx ON property_listings(location)`;
 }
@@ -66,6 +74,10 @@ export default async function handler(req, res) {
     ownerName: clean(body.ownerName || body.name, 120),
     phone: clean(body.phone, 30),
     sellerRole: clean(body.sellerRole || "Owner", 40),
+    listingSource: clean(body.listingSource || "Direct owner", 50),
+    agentName: clean(body.agentName, 120),
+    agentPhone: clean(body.agentPhone, 30),
+    agentAgency: clean(body.agentAgency, 120),
     propertyType: clean(body.propertyType || body.type, 80),
     purpose: clean(body.purpose || "Sell", 30),
     location: clean(body.location, 180),
@@ -82,7 +94,11 @@ export default async function handler(req, res) {
   if (!data.ownerName || !data.phone || !data.propertyType || !data.location) {
     return send(res, 400, { error: "Owner name, phone, property type and location are required." });
   }
-  if (!validPhone(data.phone)) return send(res, 400, { error: "Please enter a valid phone number." });
+  if (!validPhone(data.phone)) return send(res, 400, { error: "Please enter a valid owner phone number." });
+  if (data.listingSource === "Agent-listed property" && (!data.agentName || !data.agentPhone)) {
+    return send(res, 400, { error: "Agent name and phone number are required for an agent-listed property." });
+  }
+  if (data.agentPhone && !validPhone(data.agentPhone)) return send(res, 400, { error: "Please enter a valid agent phone number." });
   if (!data.consent) return send(res, 400, { error: "Owner consent is required before submission." });
 
   const sql = await getSql();
@@ -97,10 +113,11 @@ export default async function handler(req, res) {
     await ensureSchema(sql);
     const publicId = `PROP-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
     await sql`INSERT INTO property_listings (
-      public_id, owner_name, phone, seller_role, property_type, purpose, location, locality,
-      area, expected_price, facing, road_access, approvals, notes, consent
+      public_id, owner_name, phone, seller_role, listing_source, agent_name, agent_phone, agent_agency,
+      property_type, purpose, location, locality, area, expected_price, facing, road_access, approvals, notes, consent
     ) VALUES (
-      ${publicId}, ${data.ownerName}, ${data.phone}, ${data.sellerRole}, ${data.propertyType}, ${data.purpose},
+      ${publicId}, ${data.ownerName}, ${data.phone}, ${data.sellerRole}, ${data.listingSource}, ${data.agentName}, ${data.agentPhone}, ${data.agentAgency},
+      ${data.propertyType}, ${data.purpose},
       ${data.location}, ${data.locality}, ${data.area}, ${data.expectedPrice}, ${data.facing},
       ${data.roadAccess}, ${data.approvals}, ${data.notes}, ${data.consent}
     )`;

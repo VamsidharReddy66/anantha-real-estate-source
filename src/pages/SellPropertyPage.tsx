@@ -6,7 +6,7 @@ import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { trackEvent } from "@/lib/analytics";
 
-const initialForm = { ownerName: "", phone: "", sellerRole: "Owner", propertyType: "Plot", purpose: "Sell", location: "", locality: "", area: "", expectedPrice: "", facing: "", roadAccess: "", approvals: "", notes: "", consent: false };
+const initialForm = { ownerName: "", phone: "", listingSource: "Direct owner", agentName: "", agentPhone: "", agentAgency: "", sellerRole: "Owner", propertyType: "Plot", purpose: "Sell", location: "", locality: "", area: "", expectedPrice: "", facing: "", roadAccess: "", approvals: "", notes: "", consent: false };
 
 const SellPropertyPage = () => {
   const [form, setForm] = useState(initialForm);
@@ -69,8 +69,18 @@ const SellPropertyPage = () => {
             <form onSubmit={submit} className="rounded-2xl border border-border bg-card p-6 md:p-8 space-y-4">
               <div className="grid md:grid-cols-2 gap-4">
                 <input required placeholder="Owner / authorised seller name" value={form.ownerName} onChange={(e) => setForm({ ...form, ownerName: e.target.value })} className="rounded-xl border border-border bg-background px-4 py-3" />
-                <input required type="tel" placeholder="Phone number" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="rounded-xl border border-border bg-background px-4 py-3" />
+                <input required type="tel" placeholder="Owner phone number" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="rounded-xl border border-border bg-background px-4 py-3" />
               </div>
+              <div className="grid md:grid-cols-2 gap-4">
+                <select value={form.listingSource} onChange={(e) => setForm({ ...form, listingSource: e.target.value })} className="rounded-xl border border-border bg-background px-4 py-3">
+                  <option>Direct owner</option><option>Agent-listed property</option><option>Anantha-managed listing</option>
+                </select>
+                <input placeholder="Agent / agency name (if applicable)" value={form.agentName} onChange={(e) => setForm({ ...form, agentName: e.target.value })} className="rounded-xl border border-border bg-background px-4 py-3" />
+              </div>
+              {form.listingSource === "Agent-listed property" && <div className="grid md:grid-cols-2 gap-4">
+                <input required type="tel" placeholder="Agent phone number" value={form.agentPhone} onChange={(e) => setForm({ ...form, agentPhone: e.target.value })} className="rounded-xl border border-border bg-background px-4 py-3" />
+                <input placeholder="Agency / firm name" value={form.agentAgency} onChange={(e) => setForm({ ...form, agentAgency: e.target.value })} className="rounded-xl border border-border bg-background px-4 py-3" />
+              </div>}
               <div className="grid md:grid-cols-2 gap-4">
                 <select value={form.sellerRole} onChange={(e) => setForm({ ...form, sellerRole: e.target.value })} className="rounded-xl border border-border bg-background px-4 py-3"><option>Owner</option><option>Builder / Developer</option><option>Authorised seller / representative</option></select>
                 <select value={form.purpose} onChange={(e) => setForm({ ...form, purpose: e.target.value })} className="rounded-xl border border-border bg-background px-4 py-3"><option>Sell</option><option>Rent / Lease</option></select>
@@ -92,7 +102,7 @@ const SellPropertyPage = () => {
                 <input placeholder="Approvals / layout / RERA if known" value={form.approvals} onChange={(e) => setForm({ ...form, approvals: e.target.value })} className="rounded-xl border border-border bg-background px-4 py-3" />
               </div>
               <textarea rows={4} placeholder="Additional property details" value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} className="w-full rounded-xl border border-border bg-background px-4 py-3" />
-              <label className="flex gap-3 text-sm text-muted-foreground"><input required type="checkbox" checked={form.consent} onChange={(e) => setForm({ ...form, consent: e.target.checked })} className="mt-1" /><span>I confirm that I am the owner or authorised to submit this property and consent to Anantha Real Estate contacting me and using these details internally for verification and buyer/tenant matching.</span></label>
+              <label className="flex gap-3 text-sm text-muted-foreground"><input required type="checkbox" checked={form.consent} onChange={(e) => setForm({ ...form, consent: e.target.checked })} className="mt-1" /><span>I confirm that I am the owner or authorised to submit this property and consent to Anantha Real Estate storing owner and agent details privately for verification and buyer/tenant matching.</span></label>
               {result && <div className={`rounded-xl p-4 text-sm ${result.ok ? "bg-muted/60" : "border border-destructive/30"}`}>{result.ok && <CheckCircle2 className="inline mr-2 text-accent" size={18} />}<span>{result.message}</span>{result.propertyId && <p className="font-semibold mt-2">Reference: {result.propertyId}</p>}</div>}
               <Button disabled={submitting} type="submit" variant="brand" className="w-full">{submitting ? "Adding to inventory…" : "List my property with Anantha"}</Button>
               <p className="text-xs text-muted-foreground text-center">Submission does not mean the property is publicly advertised. Anantha verifies it first.</p>
