@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from "react";
-import { ArrowRight, RotateCcw, Search } from "lucide-react";
+import React, { FormEvent, useMemo, useState } from "react";
+import { ArrowRight, CheckCircle2, HomePlus, MessageCircle, RotateCcw, Search, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -9,6 +9,19 @@ import PremiumPageHero from "@/components/PremiumPageHero";
 import PremiumCTA from "@/components/PremiumCTA";
 import { propertyCategories, properties } from "@/data/properties";
 
+const initialListingForm = {
+  ownerName: "",
+  phone: "",
+  propertyType: "Plot",
+  location: "",
+  area: "",
+  facing: "",
+  roadWidth: "",
+  expectedPrice: "",
+  description: "",
+  consent: false,
+};
+
 const PropertiesPage: React.FC = () => {
   const [category, setCategory] = useState("all");
   const [location, setLocation] = useState("all");
@@ -16,6 +29,7 @@ const PropertiesPage: React.FC = () => {
   const [project, setProject] = useState("all");
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("latest");
+  const [listingForm, setListingForm] = useState(initialListingForm);
 
   const locations = useMemo(() => Array.from(new Set(properties.map((property) => property.location))).sort(), []);
   const projects = useMemo(() => Array.from(new Set(properties.map((property) => property.projectName).filter(Boolean) as string[])).sort(), []);
@@ -39,10 +53,40 @@ const PropertiesPage: React.FC = () => {
   }, [category, location, status, project, search, sort]);
 
   const resetFilters = () => {
-    setCategory("all"); setLocation("all"); setStatus("available"); setProject("all"); setSearch(""); setSort("latest");
+    setCategory("all");
+    setLocation("all");
+    setStatus("available");
+    setProject("all");
+    setSearch("");
+    setSort("latest");
+  };
+
+  const submitProperty = (event: FormEvent) => {
+    event.preventDefault();
+
+    const message = [
+      "Hi Anantha Real Estate, I want to list my property for verification.",
+      `Owner name: ${listingForm.ownerName}`,
+      `Phone: ${listingForm.phone}`,
+      `Property type: ${listingForm.propertyType}`,
+      `Location: ${listingForm.location}`,
+      `Area / Size: ${listingForm.area || "To be shared"}`,
+      `Facing: ${listingForm.facing || "To be shared"}`,
+      `Road width: ${listingForm.roadWidth || "To be shared"}`,
+      `Expected price: ${listingForm.expectedPrice || "To be discussed"}`,
+      `Property details: ${listingForm.description || "To be shared"}`,
+      "I understand the property will be reviewed before it is published publicly.",
+    ].join("\n");
+
+    window.open(
+      `https://wa.me/919391675372?text=${encodeURIComponent(message)}`,
+      "_blank",
+      "noopener,noreferrer",
+    );
   };
 
   const selectClass = "rounded-xl border border-border bg-white px-4 py-3 outline-none focus:border-accent focus:ring-2 focus:ring-accent/10 transition";
+  const inputClass = "w-full rounded-xl border border-border bg-white px-4 py-3 outline-none focus:border-accent focus:ring-2 focus:ring-accent/10 transition";
 
   return (
     <div className="min-h-screen bg-background">
@@ -53,6 +97,11 @@ const PropertiesPage: React.FC = () => {
           eyebrow="Properties"
           title="Find property with more clarity and less noise."
           description="Browse approved customer-facing inventory across plots, apartments, villas, commercial property and land. Availability and pricing are reconfirmed before you proceed."
+          actions={
+            <a href="#list-property" className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-brand-purple to-accent px-5 py-3 font-semibold text-white shadow-lg">
+              <HomePlus size={18} /> List Your Property
+            </a>
+          }
         />
 
         <section className="relative z-10 -mt-8 md:-mt-10">
@@ -89,6 +138,68 @@ const PropertiesPage: React.FC = () => {
                 <div className="flex flex-wrap items-center justify-center gap-4"><Link to="/property-consultation" className="inline-flex items-center gap-2 font-semibold text-accent">Share your requirement <ArrowRight size={16} /></Link><button type="button" onClick={resetFilters} className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground"><RotateCcw size={15} /> Clear filters</button></div>
               </div>
             ) : <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">{listings.map((property) => <PropertyListingCard key={property.slug} property={property} />)}</div>}
+          </div>
+        </section>
+
+        <section id="list-property" className="py-16 md:py-20 bg-white scroll-mt-24">
+          <div className="container mx-auto px-4">
+            <div className="grid lg:grid-cols-[0.85fr_1.15fr] gap-10 items-start rounded-3xl border border-border bg-[#f8faff] p-6 md:p-10 shadow-sm">
+              <div>
+                <p className="text-xs uppercase tracking-[0.2em] font-bold text-accent">For Property Owners</p>
+                <h2 className="font-display text-3xl md:text-4xl font-bold mt-3">List your property with Anantha Real Estate</h2>
+                <p className="mt-5 text-muted-foreground leading-relaxed">Share the basic property details here. Your owner name and phone number stay private. Our team will verify the property before any public listing is created.</p>
+
+                <div className="mt-8 grid gap-4">
+                  {[
+                    [CheckCircle2, "Submit basic property details"],
+                    [ShieldCheck, "Our team verifies the listing information"],
+                    [HomePlus, "Only approved public details are published"],
+                  ].map(([Icon, text]) => {
+                    const ItemIcon = Icon as typeof CheckCircle2;
+                    return <div key={text as string} className="flex items-center gap-3 text-sm font-medium text-foreground"><span className="grid h-9 w-9 place-items-center rounded-full bg-accent/10 text-accent"><ItemIcon size={18} /></span>{text as string}</div>;
+                  })}
+                </div>
+
+                <div className="mt-8 rounded-2xl border border-accent/15 bg-white p-5">
+                  <p className="font-semibold">Privacy note</p>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">Owner phone numbers, identity and private documents are never shown on the public property page. Buyers contact Anantha Real Estate first.</p>
+                </div>
+              </div>
+
+              <form onSubmit={submitProperty} className="rounded-2xl bg-white border border-border p-5 md:p-7 shadow-sm">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <label className="grid gap-2 text-sm font-medium">Owner name<input required autoComplete="name" value={listingForm.ownerName} onChange={(e) => setListingForm({ ...listingForm, ownerName: e.target.value })} className={inputClass} placeholder="Your name" /></label>
+                  <label className="grid gap-2 text-sm font-medium">Phone number<input required type="tel" autoComplete="tel" inputMode="tel" value={listingForm.phone} onChange={(e) => setListingForm({ ...listingForm, phone: e.target.value })} className={inputClass} placeholder="+91 phone number" /></label>
+                </div>
+
+                <div className="grid sm:grid-cols-2 gap-4 mt-4">
+                  <label className="grid gap-2 text-sm font-medium">Property type<select value={listingForm.propertyType} onChange={(e) => setListingForm({ ...listingForm, propertyType: e.target.value })} className={selectClass}><option>Plot</option><option>Apartment</option><option>House / Villa</option><option>Commercial Property</option><option>Agricultural Land</option><option>Other</option></select></label>
+                  <label className="grid gap-2 text-sm font-medium">Property location<input required value={listingForm.location} onChange={(e) => setListingForm({ ...listingForm, location: e.target.value })} className={inputClass} placeholder="Area / locality" /></label>
+                </div>
+
+                <div className="grid sm:grid-cols-2 gap-4 mt-4">
+                  <label className="grid gap-2 text-sm font-medium">Area / Size<input value={listingForm.area} onChange={(e) => setListingForm({ ...listingForm, area: e.target.value })} className={inputClass} placeholder="Example: 200 ankanams / 1800 sq ft" /></label>
+                  <label className="grid gap-2 text-sm font-medium">Expected price<input value={listingForm.expectedPrice} onChange={(e) => setListingForm({ ...listingForm, expectedPrice: e.target.value })} className={inputClass} placeholder="Example: ₹45 lakh" /></label>
+                </div>
+
+                <div className="grid sm:grid-cols-2 gap-4 mt-4">
+                  <label className="grid gap-2 text-sm font-medium">Facing<input value={listingForm.facing} onChange={(e) => setListingForm({ ...listingForm, facing: e.target.value })} className={inputClass} placeholder="East / West / North / South" /></label>
+                  <label className="grid gap-2 text-sm font-medium">Road width<input value={listingForm.roadWidth} onChange={(e) => setListingForm({ ...listingForm, roadWidth: e.target.value })} className={inputClass} placeholder="Example: 30 ft" /></label>
+                </div>
+
+                <label className="grid gap-2 text-sm font-medium mt-4">Property details<textarea rows={4} value={listingForm.description} onChange={(e) => setListingForm({ ...listingForm, description: e.target.value })} className={inputClass} placeholder="Share nearby landmarks, approvals, bedrooms, amenities or any important information." /></label>
+
+                <label className="mt-4 flex gap-3 text-xs leading-relaxed text-muted-foreground">
+                  <input required type="checkbox" checked={listingForm.consent} onChange={(e) => setListingForm({ ...listingForm, consent: e.target.checked })} className="mt-1" />
+                  <span>I confirm that I am authorised to share these property details and agree that Anantha Real Estate may contact me for verification and listing support.</span>
+                </label>
+
+                <button type="submit" className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-brand-purple to-accent px-6 py-4 font-semibold text-white shadow-lg hover:-translate-y-0.5 transition-transform">
+                  <MessageCircle size={18} /> Submit Property on WhatsApp
+                </button>
+                <p className="mt-3 text-center text-xs text-muted-foreground">After WhatsApp opens, you can also send property photos, location pin and documents directly to our team.</p>
+              </form>
+            </div>
           </div>
         </section>
 
