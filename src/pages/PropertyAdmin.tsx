@@ -75,16 +75,16 @@ export default function PropertyAdmin() {
     }
   }
 
-  useEffect(() => { void load(); }, []);
+  useEffect(() => {
+    const auth = new URLSearchParams(window.location.search).get("auth");
+    if (auth) setError(auth === "unauthorized" ? "This Google account is not approved for property administration." : "Google sign-in could not be completed. Please try again.");
+    void load();
+  }, []);
 
   async function logout() {
     setBusy(true);
     try {
-      await fetch("/api/gbp?action=logout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "X-CSRF-Token": csrf },
-        body: JSON.stringify({}),
-      });
+      await fetch("/api/property-auth?action=logout", { method: "POST" });
       setEmail("");
       setCsrf("");
       setListings([]);
@@ -133,7 +133,7 @@ export default function PropertyAdmin() {
           <h1 className="mt-2 text-3xl font-bold">Admin SSO Login</h1>
           <p className="mt-3 text-sm leading-relaxed text-slate-500">Use an approved Anantha administrator Google account to securely access property verification.</p>
           {error && <div className="mt-5 rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm text-rose-800">{error}</div>}
-          <a href="/api/gbp?action=login" className="mt-6 flex w-full items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-[#605e8a] to-[#5eb1e3] px-5 py-3 font-semibold text-white shadow-lg">Continue with Google</a>
+          <a href="/api/property-auth?action=login" className="mt-6 flex w-full items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-[#605e8a] to-[#5eb1e3] px-5 py-3 font-semibold text-white shadow-lg">Continue with Google</a>
           <p className="mt-4 text-center text-xs leading-relaxed text-slate-500">Only administrator emails approved for Anantha can open this dashboard.</p>
           <a href="/" className="mt-6 block text-center text-sm font-semibold text-slate-500 hover:text-[#605e8a]">Back to website</a>
         </div>
