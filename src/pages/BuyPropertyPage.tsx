@@ -4,16 +4,23 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
-import { trackEvent } from "@/lib/analytics";
+import { getAttribution, trackEvent } from "@/lib/analytics";
 
 const BuyPropertyPage = () => {
   const [form, setForm] = useState({ name: "", phone: "", type: "Plots", location: "", budget: "", notes: "" });
 
-  const submit = (event: FormEvent) => {
+  const submit = async (event: FormEvent) => {
     event.preventDefault();
-    trackEvent("buyer_requirement_submit", { property_type: form.type, preferred_location: form.location, budget: form.budget });
     const message = `Hi Anantha Real Estate, I am looking to buy a property.\nName: ${form.name}\nPhone: ${form.phone}\nProperty type: ${form.type}\nPreferred location: ${form.location || "Open"}\nBudget: ${form.budget || "Not specified"}\nRequirement: ${form.notes || "Please suggest suitable options."}`;
-    window.open(`https://wa.me/919391675372?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+    try {
+      const response = await fetch("/api/leads", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ formType: "buyer_requirement", name: form.name, phone: form.phone, enquiryType: form.type, message, attribution: JSON.stringify(getAttribution()) }) });
+      const payload = await response.json();
+      if (!response.ok) throw new Error(payload.error || "Unable to save your requirement.");
+      trackEvent("buyer_requirement_submit", { property_type: form.type, preferred_location: form.location, budget: form.budget });
+      window.open(`https://wa.me/919391675372?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+    } catch (error) {
+      window.alert(error instanceof Error ? error.message : "Unable to save your requirement. Please call Anantha Real Estate.");
+    }
   };
 
   return (
