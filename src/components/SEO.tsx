@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet-async";
 const SITE_URL = "https://www.anantharealestate.in";
 const DEFAULT_IMAGE = `${SITE_URL}/ANANTHA%20LOGO.png`;
 const BUSINESS_ID = `${SITE_URL}/#business`;
+const ORGANIZATION_ID = `${SITE_URL}/#organization`;
 const GOOGLE_SITE_VERIFICATION = import.meta.env.VITE_GOOGLE_SITE_VERIFICATION?.trim();
 
 interface SEOProps {
@@ -10,6 +11,7 @@ interface SEOProps {
   description: string;
   path?: string;
   image?: string;
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 const getBreadcrumbName = (path: string) => {
@@ -42,12 +44,26 @@ const SEO = ({
   description,
   path = "/",
   image = DEFAULT_IMAGE,
+  structuredData,
 }: SEOProps) => {
   const canonicalUrl = `${SITE_URL}${path === "/" ? "" : path}`;
   const isHome = path === "/";
   const pageName = getBreadcrumbName(path);
 
   const graph: Record<string, unknown>[] = [
+    {
+      "@type": "Organization",
+      "@id": ORGANIZATION_ID,
+      name: "Anantha Real Estate",
+      url: SITE_URL,
+      logo: DEFAULT_IMAGE,
+      email: "jvk.aconsultancy@gmail.com",
+      telephone: "+916302966604",
+      sameAs: [
+        "https://www.instagram.com/anantha_real_estate",
+        "https://youtube.com/@ananthaconsultancy",
+      ],
+    },
     {
       "@type": "RealEstateAgent",
       "@id": BUSINESS_ID,
@@ -57,15 +73,28 @@ const SEO = ({
       image: DEFAULT_IMAGE,
       telephone: "+916302966604",
       email: "jvk.aconsultancy@gmail.com",
+      parentOrganization: { "@id": ORGANIZATION_ID },
       address: {
         "@type": "PostalAddress",
-        streetAddress: "Sathyanarayanapuram, Mypadu Road",
+        streetAddress: "Satyanarayana Puram Centre, Mypadu Road",
         addressLocality: "Nellore",
         addressRegion: "Andhra Pradesh",
         postalCode: "524002",
         addressCountry: "IN",
       },
-      areaServed: { "@type": "City", name: "Nellore" },
+      areaServed: [
+        { "@type": "City", name: "Nellore" },
+        { "@type": "AdministrativeArea", name: "Andhra Pradesh" },
+      ],
+      contactPoint: [
+        {
+          "@type": "ContactPoint",
+          telephone: "+916302966604",
+          contactType: "customer service",
+          areaServed: "IN",
+          availableLanguage: ["English", "Telugu"],
+        },
+      ],
       sameAs: [
         "https://www.instagram.com/anantha_real_estate",
         "https://youtube.com/@ananthaconsultancy",
@@ -76,7 +105,8 @@ const SEO = ({
       "@id": `${SITE_URL}/#website`,
       url: SITE_URL,
       name: "Anantha Real Estate",
-      publisher: { "@id": BUSINESS_ID },
+      publisher: { "@id": ORGANIZATION_ID },
+      inLanguage: "en-IN",
     },
   ];
 
@@ -102,12 +132,15 @@ const SEO = ({
     });
   }
 
-  const structuredData = { "@context": "https://schema.org", "@graph": graph };
+  if (structuredData) {
+    graph.push(...(Array.isArray(structuredData) ? structuredData : [structuredData]));
+  }
 
   return (
     <Helmet>
       <title>{title}</title>
       <meta name="description" content={description} />
+      <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
       {GOOGLE_SITE_VERIFICATION && <meta name="google-site-verification" content={GOOGLE_SITE_VERIFICATION} />}
       <link rel="canonical" href={canonicalUrl} />
       <meta property="og:title" content={title} />
