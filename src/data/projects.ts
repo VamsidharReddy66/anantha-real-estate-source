@@ -3,6 +3,7 @@ export type ProjectStatus = "Active" | "Upcoming" | "Sold Out" | "Paused";
 export type Project = {
   slug: string;
   name: string;
+  partnerSlug: string;
   companyName: string;
   companyRole: string;
   status: ProjectStatus;
@@ -26,6 +27,7 @@ export const projects: Project[] = [
   {
     slug: "central-world-nellore",
     name: "Central World",
+    partnerSlug: "green-home-developers",
     companyName: "Green Home Developers",
     companyRole: "Developer",
     status: "Active",
