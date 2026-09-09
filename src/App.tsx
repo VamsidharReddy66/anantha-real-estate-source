@@ -14,8 +14,6 @@ import ProjectPage from "./pages/ProjectPage";
 import PropertiesPage from "./pages/PropertiesPage";
 import PropertyCategoryPage from "./pages/PropertyCategoryPage";
 import PropertyPage from "./pages/PropertyPage";
-import LocationsPage from "./pages/LocationsPage";
-import LocationPage from "./pages/LocationPage";
 import PropertyIntelligencePage from "./pages/PropertyIntelligencePage";
 import ContactPage from "./pages/ContactPage";
 import PropertyConsultationPage from "./pages/PropertyConsultationPage";
@@ -54,8 +52,6 @@ const App = () =>
               element={<PropertyCategoryPage />}
             />
             <Route path="/property/:slug" element={<PropertyPage />} />
-            <Route path="/locations" element={<LocationsPage />} />
-            <Route path="/locations/:slug" element={<LocationPage />} />
             <Route
               path="/property-intelligence"
               element={<PropertyIntelligencePage />}
