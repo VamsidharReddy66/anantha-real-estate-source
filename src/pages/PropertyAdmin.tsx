@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { CheckCircle2, Clock3, Eye, RefreshCcw, ShieldCheck, XCircle, AlertTriangle } from "lucide-react";
+import { CheckCircle2, Clock3, Eye, RefreshCcw, ShieldCheck, XCircle, AlertTriangle, LogOut, LockKeyhole } from "lucide-react";
 
 type Listing = Record<string, any> & {
   public_id: string;
@@ -45,6 +45,8 @@ export default function PropertyAdmin() {
   const [listings, setListings] = useState<Listing[]>([]);
   const [csrf, setCsrf] = useState("");
   const [email, setEmail] = useState("");
+  const [loginEmail, setLoginEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [filter, setFilter] = useState("PENDING");
@@ -62,7 +64,6 @@ export default function PropertyAdmin() {
         setListings([]);
         setEmail("");
         setCsrf("");
-        setError("Administrator sign-in required.");
         return;
       }
       if (!r.ok) throw new Error(data.error || "Could not load property submissions.");
@@ -77,6 +78,40 @@ export default function PropertyAdmin() {
   }
 
   useEffect(() => { void load(); }, []);
+
+  async function login(event: FormEvent) {
+    event.preventDefault();
+    setBusy(true);
+    setError("");
+    try {
+      const r = await fetch("/api/property-auth?action=login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: loginEmail, password }),
+      });
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.error || "Login failed.");
+      setPassword("");
+      await load();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Login failed.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function logout() {
+    setBusy(true);
+    try {
+      await fetch("/api/property-auth?action=logout", { method: "POST" });
+      setEmail("");
+      setCsrf("");
+      setListings([]);
+      setSelected(null);
+    } finally {
+      setBusy(false);
+    }
+  }
 
   const filtered = useMemo(() => listings.filter((l) => (l.verification_status || "PENDING") === filter), [listings, filter]);
   const counts = useMemo(() => Object.fromEntries(statusOptions.map((s) => [s.value, listings.filter((l) => (l.verification_status || "PENDING") === s.value).length])), [listings]);
@@ -103,6 +138,31 @@ export default function PropertyAdmin() {
     }
   }
 
+  if (!loading && !email) {
+    return (
+      <main className="min-h-screen bg-[#f7f9ff] grid place-items-center px-4">
+        <Helmet>
+          <title>Property Admin Login | Anantha Real Estate</title>
+          <meta name="robots" content="noindex,nofollow" />
+          <meta name="referrer" content="no-referrer" />
+        </Helmet>
+        <div className="w-full max-w-md rounded-3xl border bg-white p-7 md:p-9 shadow-xl">
+          <div className="grid h-12 w-12 place-items-center rounded-2xl bg-[#f0efff] text-[#605e8a]"><LockKeyhole size={22}/></div>
+          <p className="mt-6 text-sm font-semibold text-[#605e8a]">Anantha Real Estate</p>
+          <h1 className="mt-2 text-3xl font-bold">Property Admin Login</h1>
+          <p className="mt-3 text-sm leading-relaxed text-slate-500">Sign in to review and verify submitted properties.</p>
+          {error && <div className="mt-5 rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm text-rose-800">{error}</div>}
+          <form onSubmit={login} className="mt-6 grid gap-4">
+            <label className="grid gap-2 text-sm font-semibold">Email<input required type="email" autoComplete="username" value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} className="rounded-xl border px-4 py-3 outline-none focus:border-[#807cb7]" placeholder="Admin email" /></label>
+            <label className="grid gap-2 text-sm font-semibold">Password<input required type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} className="rounded-xl border px-4 py-3 outline-none focus:border-[#807cb7]" placeholder="Password" /></label>
+            <button disabled={busy} type="submit" className="mt-2 rounded-xl bg-gradient-to-r from-[#605e8a] to-[#5eb1e3] px-5 py-3 font-semibold text-white disabled:opacity-60">{busy ? "Signing in…" : "Sign in"}</button>
+          </form>
+          <a href="/" className="mt-6 block text-center text-sm font-semibold text-slate-500 hover:text-[#605e8a]">Back to website</a>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="min-h-screen bg-[#f7f9ff] text-slate-900 p-4 md:p-8">
       <Helmet>
@@ -118,13 +178,14 @@ export default function PropertyAdmin() {
             <h1 className="text-3xl md:text-4xl font-bold mt-2">Property Verification Dashboard</h1>
             <p className="text-slate-500 mt-2">Review owner submissions before they enter your verified inventory.</p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             {email && <span className="text-sm text-slate-500">Signed in as {email}</span>}
             <button onClick={() => void load()} className="inline-flex items-center gap-2 rounded-xl border bg-white px-4 py-2 text-sm font-semibold"><RefreshCcw size={16}/> Refresh</button>
+            <button disabled={busy} onClick={() => void logout()} className="inline-flex items-center gap-2 rounded-xl border bg-white px-4 py-2 text-sm font-semibold"><LogOut size={16}/> Sign out</button>
           </div>
         </div>
 
-        {error && <div className="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">{error} {!email && <a className="font-bold underline ml-2" href="/api/gbp?action=login">Sign in with approved Google account</a>}</div>}
+        {error && <div className="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">{error}</div>}
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {statusOptions.map(({ value, label, icon: Icon }) => (
@@ -135,7 +196,7 @@ export default function PropertyAdmin() {
           ))}
         </div>
 
-        {loading ? <div className="rounded-2xl bg-white p-10 text-center">Loading property submissions…</div> : email && filtered.length === 0 ? <div className="rounded-2xl border bg-white p-10 text-center text-slate-500">No {filter.toLowerCase().replace(/_/g, " ")} properties.</div> : email && (
+        {loading ? <div className="rounded-2xl bg-white p-10 text-center">Loading property submissions…</div> : filtered.length === 0 ? <div className="rounded-2xl border bg-white p-10 text-center text-slate-500">No {filter.toLowerCase().replace(/_/g, " ")} properties.</div> : (
           <div className="grid lg:grid-cols-[0.9fr_1.1fr] gap-6">
             <section className="rounded-2xl border bg-white overflow-hidden">
               <div className="p-5 border-b"><h2 className="font-bold text-lg">{filter.replace(/_/g, " ")}</h2></div>
