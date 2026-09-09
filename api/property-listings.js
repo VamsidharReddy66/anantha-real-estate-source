@@ -1,3 +1,5 @@
+import { submitLeadSquaredLead } from "../server/leadsquared.mjs";
+
 const JSON_HEADERS = { "Content-Type": "application/json; charset=utf-8" };
 
 function send(res, status, body) {
@@ -121,6 +123,19 @@ export default async function handler(req, res) {
       ${data.location}, ${data.locality}, ${data.area}, ${data.expectedPrice}, ${data.facing},
       ${data.roadAccess}, ${data.approvals}, ${data.notes}, ${data.consent}
     )`;
+    await submitLeadSquaredLead({
+      formType: "property_listing",
+      ownerName: data.ownerName,
+      name: data.ownerName,
+      phone: data.phone,
+      listingSource: data.listingSource,
+      agentName: data.agentName,
+      agentPhone: data.agentPhone,
+      agentAgency: data.agentAgency,
+      consent: data.consent,
+      message: [data.propertyType, data.purpose, data.location, data.locality, data.area, data.expectedPrice, data.facing, data.roadAccess, data.approvals, data.notes].filter(Boolean).join(" | "),
+    });
+
     return send(res, 201, {
       ok: true,
       propertyId: publicId,
