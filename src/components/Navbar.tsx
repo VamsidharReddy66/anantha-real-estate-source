@@ -18,8 +18,6 @@ const Navbar = () => {
   const navLinks = [
     { name: "Properties", href: "/properties" },
     { name: "Projects", href: "/projects" },
-    { name: "Buy", href: "/buy-property" },
-    { name: "Sell", href: "/sell-your-property" },
     { name: "Locations", href: "/locations" },
     { name: "Intelligence", href: "/property-intelligence" },
     { name: "Contact", href: "/contact" },
