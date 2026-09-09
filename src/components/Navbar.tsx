@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { ArrowRight, Menu, X } from "lucide-react";
 import logo from "@/assets/logo.png";
 
 const Navbar = () => {
@@ -10,54 +9,67 @@ const Navbar = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 40);
+    const handleScroll = () => setIsScrolled(window.scrollY > 18);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const navLinks = [
+    { name: "Home", href: "/" },
     { name: "Properties", href: "/properties" },
     { name: "Projects", href: "/projects" },
-    { name: "Intelligence", href: "/property-intelligence" },
+    { name: "Services", href: "/services" },
+    { name: "Property Intelligence", href: "/property-intelligence" },
+    { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
   ];
 
-  const isHomePage = location.pathname === "/";
-  const transparent = isHomePage && !isScrolled;
+  const activeLink = (href: string) =>
+    href === "/"
+      ? location.pathname === "/"
+      : location.pathname === href || location.pathname.startsWith(`${href}/`);
 
   return (
-    <header className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${transparent ? "bg-transparent" : "bg-background/95 backdrop-blur border-b border-border"}`}>
-      <div className="container mx-auto px-4 h-20 flex items-center justify-between gap-8">
-        <Link to="/" className="shrink-0 flex items-center">
-          <img src={logo} alt="Anantha Real Estate" className="h-14 w-auto" />
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? "bg-white/95 backdrop-blur-xl shadow-[0_10px_35px_rgba(20,34,90,0.08)]"
+          : "bg-white"
+      }`}
+    >
+      <div className="container mx-auto px-4 h-[76px] flex items-center gap-8">
+        <Link to="/" className="shrink-0 flex items-center" aria-label="Anantha Real Estate home">
+          <img src={logo} alt="Anantha Real Estate Consultancy" className="h-12 md:h-14 w-auto object-contain" />
         </Link>
 
-        <nav className="hidden xl:flex items-center gap-5 ml-auto">
-          {navLinks.map((link) => {
-            const active = location.pathname === link.href || location.pathname.startsWith(`${link.href}/`);
-            return (
-              <Link
-                key={link.name}
-                to={link.href}
-                className={`text-sm font-medium transition-colors ${transparent ? "text-cream/85 hover:text-cream" : "text-foreground/75 hover:text-foreground"} ${active ? (transparent ? "text-cream" : "text-foreground") : ""}`}
-              >
-                {link.name}
-              </Link>
-            );
-          })}
+        <nav className="hidden xl:flex items-center gap-6 ml-auto">
+          {navLinks.map((link) => (
+            <Link
+              key={link.name}
+              to={link.href}
+              className={`relative py-7 text-[13px] font-semibold transition-colors ${
+                activeLink(link.href)
+                  ? "text-[#2f1a9b]"
+                  : "text-slate-700 hover:text-[#2f1a9b]"
+              }`}
+            >
+              {link.name}
+              {activeLink(link.href) && (
+                <span className="absolute left-0 right-0 bottom-[17px] h-0.5 rounded-full bg-gradient-to-r from-[#4320a8] to-[#1f87ee]" />
+              )}
+            </Link>
+          ))}
         </nav>
 
-        <div className="hidden xl:flex items-center gap-3">
-          <a href="tel:+919391675372" className={`text-sm font-medium ${transparent ? "text-cream/85 hover:text-cream" : "text-foreground/75 hover:text-foreground"}`}>
-            +91 93916 75372
-          </a>
-          <Button variant={transparent ? "heroOutline" : "brand"} size="lg" asChild>
-            <Link to="/property-consultation">Get Matched</Link>
-          </Button>
-        </div>
+        <Link
+          to="/property-consultation"
+          className="hidden xl:inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#1f8ef1] via-[#315fe5] to-[#5420ae] px-5 py-3 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(58,58,190,0.24)] transition-transform hover:-translate-y-0.5"
+        >
+          Get in Touch <ArrowRight size={16} />
+        </Link>
 
         <button
-          className={`xl:hidden p-2 ${transparent ? "text-cream" : "text-foreground"}`}
+          className="xl:hidden ml-auto p-2 rounded-xl text-slate-900"
           onClick={() => setIsMobileMenuOpen((open) => !open)}
           aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
         >
@@ -66,24 +78,27 @@ const Navbar = () => {
       </div>
 
       {isMobileMenuOpen && (
-        <div className="xl:hidden bg-background border-t border-border max-h-[78vh] overflow-y-auto">
-          <nav className="container mx-auto px-4 py-6 flex flex-col">
+        <div className="xl:hidden bg-white border-t border-slate-100 shadow-xl">
+          <nav className="container mx-auto px-4 py-4 flex flex-col">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 to={link.href}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="py-3 text-base font-medium border-b border-border last:border-0"
+                className={`py-3.5 text-sm font-semibold border-b border-slate-100 last:border-0 ${
+                  activeLink(link.href) ? "text-[#3f20a3]" : "text-slate-700"
+                }`}
               >
                 {link.name}
               </Link>
             ))}
-            <div className="pt-5 grid gap-3">
-              <a href="tel:+919391675372" className="text-sm text-muted-foreground">+91 93916 75372</a>
-              <Button variant="brand" asChild>
-                <Link to="/property-consultation" onClick={() => setIsMobileMenuOpen(false)}>Free Consultation</Link>
-              </Button>
-            </div>
+            <Link
+              to="/property-consultation"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="mt-4 inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#1f8ef1] to-[#5320ae] px-5 py-3.5 text-sm font-semibold text-white"
+            >
+              Get in Touch <ArrowRight size={16} />
+            </Link>
           </nav>
         </div>
       )}
