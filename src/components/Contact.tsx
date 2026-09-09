@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { trackEvent } from "@/lib/analytics";
+import { getAttribution, trackEvent } from "@/lib/analytics";
 
 const Contact = () => {
   const { toast } = useToast();
@@ -56,28 +56,20 @@ const Contact = () => {
     }
 
     try {
-      // send form data to SheetDB
-      const response = await fetch("https://sheetdb.io/api/v1/5t6g1w4g6wj80", {
+      const response = await fetch("/api/leads", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          data: [
-            {
-              name: formData.name,
-              email: formData.email,
-              phone: formData.phone,
-              message: formData.message,
-              timestamp: new Date().toLocaleString(),
-            },
-          ],
+          formType: "contact",
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          message: formData.message,
+          attribution: JSON.stringify(getAttribution()),
         }),
       });
-
-      if (!response.ok) {
-        throw new Error("Failed to submit form");
-      }
+      const payload = await response.json();
+      if (!response.ok) throw new Error(payload.error || "Failed to submit form");
 
       trackEvent("contact_form_submit", { form_name: "general_contact" });
 
